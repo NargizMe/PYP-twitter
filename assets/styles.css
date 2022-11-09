@@ -1,0 +1,16 @@
+*{
+    --dark-gray-color: #828282;
+    --pale-gray-color: #BDBDBD;
+    --gray-second-color: #4F4F4F;
+    --backgrounf-gray-color: #F2F2F2;
+    --main-blue-color: #2F80ED;
+    --main-black-color: #333333;
+    --red-color: #EB5757;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: var(--backgrounf-gray-color);
+}
