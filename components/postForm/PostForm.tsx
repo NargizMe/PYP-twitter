@@ -99,5 +99,6 @@ const UploadImgContainer = styled.div`
     border: none;
     border-radius: 3px;
     color: white;
+    cursor: pointer;
   }
 `

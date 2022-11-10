@@ -1,5 +1,7 @@
+"use client"
 import '../assets/styles.css'
 import Navbar from '../components/navbar/Navbar';
+import styled from "@emotion/styled";
 
 export default function RootLayout({
   children,
@@ -14,9 +16,7 @@ export default function RootLayout({
       </head>
       <body>
         <Navbar/>
-        <main style = {{padding: '25px 183px', display: 'flex'}}>
-            {children}
-        </main>
+        {children}
       <footer style = {{padding: '25px 0'}}>
           <p style={{textAlign: 'center', color: 'var(--dark-gray-color)'}}>created by username - Nargiz Raf</p>
       </footer>

@@ -16,14 +16,14 @@ export default function Navbar(){
             <NavList>
                 <li><Link href='/'>Home</Link></li>
                 <li><Link href='/'>Explore</Link></li>
-                <li><Link href='/'>Bookmarks</Link></li>
+                <li><Link href='/login-sign-up'>Login / Sign up</Link></li>
             </NavList>
             <ProfileContainer>
-                <div>
-                    <Image alt = 'profile image' src={img}/>
-                </div>
-                <span>Me Mee</span>
                 <button>
+                    <div>
+                        <Image alt = 'profile image' src={img}/>
+                    </div>
+                    <span>Me Mee</span>
                     <IoMdArrowDropdown />
                 </button>
                 <DropDown>
@@ -81,6 +81,7 @@ const NavList = styled.ul`
     line-height: 21px;
     display: flex;
     align-items: center;
+    border-bottom: 2px solid transparent;
 
     a{
       color: var(--dark-gray-color);
@@ -98,10 +99,21 @@ const NavList = styled.ul`
 
 const ProfileContainer = styled.div`
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 130px;
+
+  button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 130px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--main-black-color);
+
+    svg{
+      font-size: 18px;
+    }
+  }
   
   div{
     width: 32px;
@@ -114,22 +126,11 @@ const ProfileContainer = styled.div`
       border-radius: 3px;
     }
   }
-  
-  button{
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--main-black-color);
-    
-    svg{
-      font-size: 18px;
-    }
-  }
 `
 
 const DropDown = styled.ul`
+  display: none;
   width: 155px;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 13px;

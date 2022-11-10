@@ -7,6 +7,7 @@ import { AiOutlineRetweet } from 'react-icons/ai';
 import { BsHeart } from 'react-icons/bs';
 import { VscSave } from 'react-icons/vsc';
 import { RiSendPlaneLine } from 'react-icons/ri';
+import Comment from "../comment/Comment";
 
 export default function Post(){
     return(
@@ -30,32 +31,36 @@ export default function Post(){
                 <li>313 Saved</li>
             </PostInfo>
             <IconContainer>
-                <div>
+                <button>
                     <BiComment/>
                     <span>Comment</span>
-                </div>
-                <div>
+                </button>
+                <button>
                     <AiOutlineRetweet/>
                     <span>Retweet</span>
-                </div>
-                <div>
+                </button>
+                <button>
                     <BsHeart/>
                     <span>Like</span>
-                </div>
-                <div>
+                </button>
+                <button>
                     <VscSave/>
                     <span>Save</span>
-                </div>
+                </button>
             </IconContainer>
             <ProfileImgContainer>
                 <Img>
                     <Image alt = 'profile image' src={img}/>
                 </Img>
                 <label>
-                    <input placeholder='Tweet your reply' />
-                    <RiSendPlaneLine/>
+                    <textarea placeholder='Tweet your reply' />
+                    <button>
+                        <RiSendPlaneLine/>
+                    </button>
                 </label>
             </ProfileImgContainer>
+            <Line/>
+            <Comment/>
         </PostContainer>
     )
 }
@@ -63,6 +68,12 @@ export default function Post(){
 
 
 // -----------------style-----------------
+const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: var(--backgrounf-gray-color);
+  margin: 10px 0;
+`
 const PostContainer = styled.section`
   background-color: white;
   padding: 20px;
@@ -82,7 +93,6 @@ const ProfileImgContainer = styled.div`
   align-items: center;
 
   label{
-    padding-right: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -90,11 +100,27 @@ const ProfileImgContainer = styled.div`
     background: #FAFAFA;
     border: 1px solid var(--backgrounf-gray-color);
     width: 100%;
+    position: relative;
     
-    input{
-      padding: 12px;
+    textarea{
+      padding: 13px;
       border: none;
       background: #FAFAFA;
+      resize: none;
+      width: 100%;
+      height: 40px;
+    }
+    
+    button{
+      border: none;
+      background-color: transparent;
+      position: absolute;
+      right: 13px;
+      
+      svg{
+        font-size: 17px;
+        color: var(--main-blue-color);
+      }
     }
   }
 `
@@ -166,7 +192,9 @@ const IconContainer = styled.div`
   border-top: 1px solid var(--backgrounf-gray-color);
   margin-bottom: 10px;
 
-  div{
+  button{
+    border: none;
+    background-color: transparent;
     display: flex;
     align-items: center;
     padding: 13px 40px;
