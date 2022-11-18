@@ -1,0 +1,101 @@
+.whoToFollowContainer{
+  background-color: white;
+  border-radius: 13px;
+  padding: 13px 20px;
+
+  h4 {
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: -0.035em;
+    color: var(--gray-second-color);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--background-gray-color);
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: -0.035em;
+    color: var(--dark-gray-color);
+    margin: 20px 0;
+  }
+}
+
+.whoToFollowProfileImgContainer{
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+
+  label{
+    padding-right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 7px;
+    background: #FAFAFA;
+    border: 1px solid var(--background-gray-color);
+    width: 100%;
+
+    input{
+      padding: 12px;
+      border: none;
+      background: #FAFAFA;
+    }
+  }
+
+  button{
+    border: none;
+    border-radius: 5px;
+    padding: 7px 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    background-color: var(--main-blue-color);
+    cursor: pointer;
+  }
+}
+
+.whoToFollowProfileImg{
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  display: flex;
+
+  img{
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+  }
+}
+
+.whoToFollowProfileInfo{
+  margin: 0 19px;
+
+  h3{
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.035em;
+  }
+
+  span{
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.035em;
+    color: var(--pale-gray-color);
+  }
+}
+
+.whoToFollowProfileBanner{
+  width: 100%;
+  height: 100px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: 1px solid var(--background-gray-color);
+
+  img{
+    width: 100%;
+    height: 80px;
+    border-radius: 8px;
+  }
+}

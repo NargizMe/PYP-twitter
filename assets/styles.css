@@ -2,7 +2,7 @@
     --dark-gray-color: #828282;
     --pale-gray-color: #BDBDBD;
     --gray-second-color: #4F4F4F;
-    --backgrounf-gray-color: #F2F2F2;
+    --background-gray-color: #F2F2F2;
     --main-blue-color: #2F80ED;
     --main-black-color: #333333;
     --red-color: #EB5757;
@@ -16,5 +16,5 @@ html{
 }
 
 body{
-    background-color: var(--backgrounf-gray-color);
+    background-color: var(--background-gray-color);
 }

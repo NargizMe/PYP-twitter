@@ -1,0 +1,101 @@
+.logSignForm {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  gap: 30px;
+  width: 320px;
+}
+
+.logSignErrorSpan {
+  color: tomato;
+  font-size: 12px;
+}
+
+.loginButton {
+  padding: 15px 25px;
+  border:none;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  width: 100px;
+  font-size: 16px;
+  align-self: end;
+  cursor: pointer;
+}
+
+.logSignInputContainer{
+  position: relative;
+
+  svg {
+    position: absolute;
+    top: 9px;
+  }
+}
+
+.logSignInput {
+  padding: 10px 25px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  width: 100%;
+}
+
+.signUpLabel{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  svg{
+    color: var(--main-blue-color);
+    font-size: 25px;
+    margin-right: 13px;
+  }
+
+  span{
+    font-size: 13px;
+    color: var(--dark-gray-color);
+  }
+
+  input{
+    display: none;
+  }
+}
+
+.signUpButtonContainer{
+  display: flex;
+  justify-content: space-between;
+
+  div{
+    margin: 13px 0;
+
+    img{
+      border-radius: 13px;
+      width: 100px;
+      height: 100px;
+    }
+
+    button{
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+
+      svg{
+        color: tomato;
+      }
+    }
+  }
+
+  button{
+    padding: 15px 25px;
+    border: none;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    width: 100px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: start;
+  }
+}

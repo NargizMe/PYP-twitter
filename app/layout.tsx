@@ -1,13 +1,15 @@
 "use client"
 import '../assets/styles.css'
 import Navbar from '../components/navbar/Navbar';
-import styled from "@emotion/styled";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  // const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate;
+
   return (
     <html lang="en">
       <head>
