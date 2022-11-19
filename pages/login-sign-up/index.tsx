@@ -1,10 +1,10 @@
-"use client";
+;
 import Image from "next/image";
 import img from "../../assets/images/signin-image.jpeg";
 import { useState } from "react";
 import Login from "../../components/login-signup/Login";
 import SignUp from "../../components/login-signup/SignUp";
-import authScss from './auth.module.scss';
+import authScss from '../../styles/auth.module.scss';
 
 export default function LoginSignUp() {
   const [tab, setTab] = useState(true);
@@ -13,7 +13,7 @@ export default function LoginSignUp() {
     <main className={authScss.authMain}>
       <section className={authScss.authContainer}>
         <div>
-          <Image alt="signup-image image" src={img} />
+          <Image alt="signup-image image" src={img} width={50} height={50} />
         </div>
         <div>
           <div className={authScss.authButtonContainer}>

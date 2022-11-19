@@ -1,8 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import { cookiePersistStorage } from "../utils/cookie.storage";
-// import { mountStoreDevtool } from 'simple-zustand-devtools';
-
+import { mountStoreDevtool } from "simple-zustand-devtools";
 const initialState = {
   id: null,
   email: null,
@@ -43,6 +42,6 @@ export const useUserState = create(
   )
 )
 
-// if (typeof window !== undefined) {
-//   mountStoreDevtool('UserState', useUserState);
-// }
+if (typeof window !== undefined) {
+  mountStoreDevtool('UserState', useUserState);
+}

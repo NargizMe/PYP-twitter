@@ -7,7 +7,7 @@ export default function Comment(){
     return(
         <div className={commentScss.commentContainer}>
             <div className={commentScss.commentImageContainer}>
-                <Image alt = 'profile image' src={img}/>
+                <Image alt = 'profile image' src={img} width={50} height={50} />
             </div>
             <div>
                 <div className={commentScss.commentTextContainer}>

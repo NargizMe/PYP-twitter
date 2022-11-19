@@ -1,10 +1,9 @@
-"use client"
 import supabase from "../config/supabaseClient";
 import PostForm from "../components/post-form/PostForm";
 import Post from "../components/post/Post";
 import WhoToFollow from "../components/who-to-follow/WhoToFollow";
-import { use } from "react";
 import { useUserState } from "../state/user.state";
+import useGetAllPosts from "../components/post/useGetAllPosts";
 
 const mainStyles = {
   display: "grid",
@@ -14,42 +13,19 @@ const mainStyles = {
   padding: "25px 0"
 };
 
-export async function getPosts(): Promise<{ status: "error" | "success" | "pending"; data: any }> {
-  let { data, error } = await supabase
-    .from("posts")
-    .select(`*, users(name)`);
-
-  if (error) {
-    return {
-      status: "error",
-      data: error
-    };
-  }
-  if (data) {
-    return {
-      status: "success",
-      data: data
-    };
-  }
-
-  return {
-    status: "pending",
-    data: null
-  };
-}
-
 export default function Home() {
-  const payload = use(getPosts());
   const userStore = useUserState();
+  const postState = useGetAllPosts();
+
 
   function renderPosts() {
-    if (payload.status === "success") {
+    if (postState.status === "success") {
       return (
-        <Post data={payload.data} />
+        <Post data={postState.data} />
       );
     }
 
-    if (payload.status === "error") {
+    if (postState.status === "error") {
       return (
         <div>Error: Couldn't get any data</div>
       );

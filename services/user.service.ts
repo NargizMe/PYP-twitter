@@ -39,9 +39,10 @@ const userService = {
 
   uploadImage: async (imageSupa: File | null) => {
     if(imageSupa){
+      const fileName = Date.now().toString() + "-" + imageSupa.name.replaceAll(" ", "");
       const { data: imageData, error: imageError } = await supabase.storage
         .from("images")
-        .upload("public/" + imageSupa.name, imageSupa);
+        .upload("public/" + fileName, imageSupa);
 
       return { status: 'success', imageData, imageError }
     }

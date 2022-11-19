@@ -1,4 +1,3 @@
-"use client";
 import React, { ChangeEvent, MouseEvent, useState } from "react";
 import { Formik, Form, Field, FormikValues } from "formik";
 import * as Yup from "yup";
@@ -8,7 +7,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import Image from "next/image";
 import userService from "../../services/user.service";
 import { useUserState } from "../../state/user.state";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import signScss from './logSign.module.scss';
 
 const DisplayingErrorMessagesSchema = Yup.object().shape({

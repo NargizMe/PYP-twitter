@@ -27,7 +27,7 @@ export default function Post({ data }: Props) {
         <section className={postScss.postMain} key={i}>
           <div className={postScss.postProfileImgContainer}>
             <div className={postScss.postProfileImg}>
-              <Image alt="profile image" src={img} />
+              <Image alt="profile image" src={img} width={50} height={50} />
             </div>
             <div className={postScss.postProfileInfo}>
               <h3>{item.users.name}</h3>
@@ -63,7 +63,7 @@ export default function Post({ data }: Props) {
           </div>
           <div className={postScss.postProfileImgContainer}>
             <div className={postScss.postProfileImg}>
-              <Image alt="profile image" src={img} />
+              <Image alt="profile image" src={img} width={50} height={50} />
             </div>
             <label>
               <textarea placeholder="Tweet your reply" />

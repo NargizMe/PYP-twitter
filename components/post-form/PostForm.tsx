@@ -1,4 +1,4 @@
-"use client";
+;
 import Image from "next/image";
 import { v4 as uuidv4 } from 'uuid';
 import { MdOutlineImage } from "react-icons/md";
@@ -49,7 +49,7 @@ export default function PostForm() {
       <div className={postFormScss.line} />
       <div className={postFormScss.postFormImgContainer}>
         <div>
-          <Image alt="profile image" src={`${PATH_TO_USER_IMAGE}/${userState.user.image}`} />
+          <Image alt="profile image" src={`${PATH_TO_USER_IMAGE}/${userState.user.image}`} width={50} height={50} />
         </div>
         <textarea
           id="tweet-input"

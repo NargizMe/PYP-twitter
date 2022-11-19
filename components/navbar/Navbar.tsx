@@ -1,4 +1,3 @@
-"use client";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { HiUserGroup } from "react-icons/hi";
@@ -12,7 +11,7 @@ import { useUserState } from "../../state/user.state";
 import userService from "../../services/user.service";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import navScss from './nav.module.scss';
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
   const [dropDown, setDropDown] = useState(false);
@@ -29,8 +28,7 @@ export default function Navbar() {
     }
 
     userStore.removeUser();
-    await router.refresh();
-    // window.location.href = "/";
+    window.location.href = "/";
   }
 
   return (
@@ -38,8 +36,12 @@ export default function Navbar() {
       <p>Twitter</p>
       <nav>
         <ul className={navScss.navList}>
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="/">Explore</Link></li>
+          <li><Link href="/">
+            <a>Home</a>
+          </Link></li>
+          <li><Link href="/">
+            <a>Explore</a>
+          </Link></li>
         </ul>
       </nav>
       {
@@ -52,8 +54,6 @@ export default function Navbar() {
                       loading='lazy'
                       alt="profile image"
                       src={`${PATH_TO_USER_IMAGE}/${userStore.user.image}`}
-                      width={32}
-                      height={32}
                     />
                     :
                     <Image
@@ -71,20 +71,24 @@ export default function Navbar() {
                 <ul className={navScss.navDropDown}>
                   <li>
                     <Link href={"/profile"}>
-                      <CgProfile />
-                      <span>My Profile</span>
+                      <a>
+                        <CgProfile />
+                        <span>My Profile</span>
+                      </a>
                     </Link>
                   </li>
                   <li>
                     <Link href={"/group-chat"}>
-                      <HiUserGroup />
-                      <span>Group chat</span>
+                      <a><HiUserGroup />
+                        <span>Group chat</span></a>
                     </Link>
                   </li>
                   <li>
                     <Link href={"/settings"}>
-                      <AiFillSetting />
-                      <span>Settings</span>
+                      <a>
+                        <AiFillSetting />
+                        <span>Settings</span>
+                      </a>
                     </Link>
                   </li>
                   <hr />
@@ -100,7 +104,7 @@ export default function Navbar() {
           </div>
           :
           <div className={navScss.navAuth}>
-            <Link href="/login-sign-up">Login / Sign up</Link>
+            <Link href="/login-sign-up"><a>Login / Sign up</a></Link>
           </div>
       }
     </header>

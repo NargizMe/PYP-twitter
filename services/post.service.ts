@@ -13,9 +13,10 @@ const postService = {
 
   uploadImage: async (tweetImage: File | null) => {
     if(tweetImage){
+      const fileName = Date.now().toString() + "-" + tweetImage.name
       const { data: imageData, error: imageError } = await supabase.storage
         .from("images")
-        .upload("public/" + tweetImage.name, tweetImage);
+        .upload("public/" + fileName, tweetImage);
 
       return { status: 'success', imageData, imageError }
     }

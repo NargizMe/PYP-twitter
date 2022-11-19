@@ -1,11 +1,10 @@
-"use client";
 import React from "react";
 import { Formik, Form, Field, FormikValues } from "formik";
 import * as Yup from "yup";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import userService from "../../services/user.service";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useUserState } from "../../state/user.state";
 import loginScss from './logSign.module.scss';
 
