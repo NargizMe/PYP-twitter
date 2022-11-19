@@ -30,7 +30,6 @@ export default function PostForm() {
       user_id: userState.user.id,
       post_id: uuidv4(),
     }
-    console.log('payLoad', payLoad);
     const upLoad = await postService.uploadImage(file);
 
     if(upLoad.status === 'success'){
@@ -39,8 +38,6 @@ export default function PostForm() {
     }
 
     const post = await postService.savePostToDB(payLoad)
-
-    // console.log(post);
   }
 
   return (

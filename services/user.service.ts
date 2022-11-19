@@ -22,12 +22,17 @@ const userService = {
   },
 
   saveUserToDB: async (values: FormikValues, imageSupa: File | null, id: string) => {
+    let fileName;
+    if(imageSupa){
+      fileName = Date.now().toString() + "-" + imageSupa.name.replaceAll(" ", "");
+    }
+    console.log('save', fileName);
     const { data, error } = await supabase
       .from("users")
       .insert([{
         email: values.email,
         name: values.fullName,
-        image: imageSupa ? imageSupa.name : null,
+        image: fileName ? fileName : null,
         user_id: id
       }])
       .select()
@@ -37,12 +42,12 @@ const userService = {
     return { userData: data as IUser[], userError: error }
   },
 
-  uploadImage: async (imageSupa: File | null) => {
+  uploadImage: async (imageSupa: File | null, imgName:string) => {
     if(imageSupa){
-      const fileName = Date.now().toString() + "-" + imageSupa.name.replaceAll(" ", "");
+      console.log('upload', imgName);
       const { data: imageData, error: imageError } = await supabase.storage
         .from("images")
-        .upload("public/" + fileName, imageSupa);
+        .upload("public/" + imgName, imageSupa);
 
       return { status: 'success', imageData, imageError }
     }

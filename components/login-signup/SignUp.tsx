@@ -61,18 +61,25 @@ export default function SignUp() {
       return;
     }
 
-    // if image selected and users table is success -> upload an image
-    const { status, imageData, imageError } = await userService.uploadImage(imageSupa);
+    let check;
+    if(userData || imageSupa?.name){
+      check = userData.filter((item) => item.image?.includes(imageSupa!.name));
+    }
 
-    if(data && data.user){
-      userStore.saveUser({
-        id: data.user.id,
-        email: data.user.email as string,
-        name: userData[0].name,
-        role: data.user.role || null,
-        image: status === 'success' ? imageData!.path: null
-      })
-      await router.push('/');
+    if(check && check[0].image){
+      // if image selected and users table is success -> upload an image
+      const { status, imageData, imageError } = await userService.uploadImage(imageSupa, check[0].image );
+
+      if(data && data.user){
+        userStore.saveUser({
+          id: data.user.id,
+          email: data.user.email as string,
+          name: userData[0].name,
+          role: data.user.role || null,
+          image: status === 'success' ? imageData!.path: null
+        })
+        await router.push('/');
+      }
     }
   }
 

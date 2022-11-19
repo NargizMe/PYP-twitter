@@ -8,6 +8,7 @@ import { VscSave } from "react-icons/vsc";
 import { RiSendPlaneLine } from "react-icons/ri";
 import Comment from "../comment/Comment";
 import postScss from './post.module.scss';
+import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 
 interface Props {
   data: any;
@@ -23,11 +24,17 @@ export default function Post({ data }: Props) {
 
   return (
     data.map((item: any, i: number) => {
+      console.log(`${PATH_TO_USER_IMAGE}/${item.users.image}`);
       return (
         <section className={postScss.postMain} key={i}>
           <div className={postScss.postProfileImgContainer}>
             <div className={postScss.postProfileImg}>
-              <Image alt="profile image" src={img} width={50} height={50} />
+              {
+                item.users?.image?
+                  <Image alt="profile image" src={`${PATH_TO_USER_IMAGE}/${item.users.image}`} width={50} height={50} />
+                :
+                  <Image alt="profile image" src={img} width={50} height={50} />
+              }
             </div>
             <div className={postScss.postProfileInfo}>
               <h3>{item.users.name}</h3>
@@ -35,9 +42,13 @@ export default function Post({ data }: Props) {
             </div>
           </div>
           <p>{item.tweet}</p>
-          <div className={postScss.postImg}>
-            <Image alt="Post Image" src={img} />
-          </div>
+          {
+            item.image?
+              <div className={postScss.postImg}>
+                    <Image alt="Post Image"  src={`${PATH_TO_USER_IMAGE}/${item.image}`} width={50} height={50} />
+              </div>
+            :null
+          }
           <ul className={postScss.postInfo}>
             <li>{item.comment_count} Comments</li>
             <li>{item.retweet_count} Retweet</li>

@@ -7,7 +7,7 @@ export default function useGetAllPosts() {
   async function getPosts() {
     let { data, error } = await supabase
       .from("posts")
-      .select(`*, users(name)`);
+      .select(`*, users(name, image)`);
 
     if (error) {
       setState({
