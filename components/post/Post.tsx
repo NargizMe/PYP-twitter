@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { format } from "date-fns";
 import img from "../../assets/images/me.jpg";
 import { BiComment } from "react-icons/bi";
@@ -9,12 +8,15 @@ import { RiSendPlaneLine } from "react-icons/ri";
 import Comment from "../comment/Comment";
 import postScss from './post.module.scss';
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
+import { useUserState } from "../../state/user.state";
 
 interface Props {
   data: any;
 }
 
 export default function Post({ data }: Props) {
+
+  const userStore = useUserState();
 
   function handleDateFormat(date: string) {
     const newDate = new Date(date);
@@ -28,14 +30,14 @@ export default function Post({ data }: Props) {
       return (
         <section className={postScss.postMain} key={i}>
           <div className={postScss.postProfileImgContainer}>
-            <div className={postScss.postProfileImg}>
-              {
-                item.users?.image?
-                  <Image alt="profile image" src={`${PATH_TO_USER_IMAGE}/${item.users.image}`} width={50} height={50} />
-                :
-                  <Image alt="profile image" src={img} width={50} height={50} />
-              }
-            </div>
+            {
+              item.users?.image?
+                <img className={postScss.postProfileImg} alt="profile image" src={`${PATH_TO_USER_IMAGE}/${item.users.image}`} />
+              :
+                <div className={postScss.defaultImg}>
+                  <p>{item.users.name?.slice(0, 1).toLocaleUpperCase()}</p>
+                </div>
+            }
             <div className={postScss.postProfileInfo}>
               <h3>{item.users.name}</h3>
               <span>{handleDateFormat(item.created_at)}</span>
@@ -45,7 +47,7 @@ export default function Post({ data }: Props) {
           {
             item.image?
               <div className={postScss.postImg}>
-                    <Image alt="Post Image"  src={`${PATH_TO_USER_IMAGE}/${item.image}`} width={50} height={50} />
+                <img alt="Post Image"  src={`${PATH_TO_USER_IMAGE}/${item.image}`} />
               </div>
             :null
           }
@@ -73,9 +75,14 @@ export default function Post({ data }: Props) {
             </button>
           </div>
           <div className={postScss.postProfileImgContainer}>
-            <div className={postScss.postProfileImg}>
-              <Image alt="profile image" src={img} width={50} height={50} />
-            </div>
+            {
+              userStore.user.image?
+                <img className={postScss.postProfileImg} alt="profile image" src={`${PATH_TO_USER_IMAGE}/${item.users.image}`} />
+              :
+                <div className={postScss.defaultImg}>
+                  <p>{userStore.user.name?.slice(0, 1).toLocaleUpperCase()}</p>
+                </div>
+            }
             <label>
               <textarea placeholder="Tweet your reply" />
               <button>

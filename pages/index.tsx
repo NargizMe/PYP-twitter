@@ -3,7 +3,10 @@ import PostForm from "../components/post-form/PostForm";
 import Post from "../components/post/Post";
 import WhoToFollow from "../components/who-to-follow/WhoToFollow";
 import { useUserState } from "../state/user.state";
-import useGetAllPosts from "../components/post/useGetAllPosts";
+import postService from "../services/post.service";
+import { useEffect, useState } from "react";
+import { IPost, IResponse } from "../types/common.type";
+import { usePostState } from "../state/post.state";
 
 const mainStyles = {
   display: "grid",
@@ -15,17 +18,24 @@ const mainStyles = {
 
 export default function Home() {
   const userStore = useUserState();
-  const postState = useGetAllPosts();
+  const postStore = usePostState();
+
+  useEffect(() => {
+    (async() => {
+      let data = await postService.getPost();
+      postStore.setPayload(data)
+    })()
+  }, [])
 
 
   function renderPosts() {
-    if (postState.status === "success") {
+    if (postStore.payload.status === "success") {
       return (
-        <Post data={postState.data} />
+        <Post data={postStore.payload.data} />
       );
     }
 
-    if (postState.status === "error") {
+    if (postStore.payload.status === "error") {
       return (
         <div>Error: Couldn't get any data</div>
       );

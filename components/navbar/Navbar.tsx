@@ -48,21 +48,18 @@ export default function Navbar() {
         isUser ?
           <div className={navScss.navProfile}>
             <button onClick={() => setDropDown(!dropDown)}>
-                {
-                  userStore.user.image ?
-                    <img
-                      loading='lazy'
-                      alt="profile image"
-                      src={`${PATH_TO_USER_IMAGE}/${userStore.user.image}`}
-                    />
-                    :
-                    <Image
-                      alt="profile image"
-                      src={img}
-                      width={32}
-                      height={32}
-                    />
-                }
+              {
+                userStore.user.image ?
+                  <img
+                    loading='lazy'
+                    alt="profile image"
+                    src={`${PATH_TO_USER_IMAGE}/${userStore.user.image}`}
+                  />
+                :
+                  <div className={navScss.defaultImg}>
+                    <p>{userStore.user.name?.slice(0, 1).toLocaleUpperCase()}</p>
+                  </div>
+              }
               <span>{userStore.user.name}</span>
               <IoMdArrowDropdown />
             </button>

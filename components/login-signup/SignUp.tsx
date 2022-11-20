@@ -63,12 +63,13 @@ export default function SignUp() {
 
     let check;
     if(userData || imageSupa?.name){
-      check = userData.filter((item) => item.image?.includes(imageSupa!.name));
+      check = userData.find((item) => item.image?.includes(imageSupa!.name.replaceAll(" ", '')));
     }
-
-    if(check && check[0].image){
+    console.log('chec', check);
+    if(check && check.image){
+      console.log('mmmm');
       // if image selected and users table is success -> upload an image
-      const { status, imageData, imageError } = await userService.uploadImage(imageSupa, check[0].image );
+      const { status, imageData, imageError } = await userService.uploadImage(imageSupa, check.image );
 
       if(data && data.user){
         userStore.saveUser({
@@ -77,6 +78,18 @@ export default function SignUp() {
           name: userData[0].name,
           role: data.user.role || null,
           image: status === 'success' ? imageData!.path: null
+        })
+        await router.push('/');
+      }
+    } else{
+      console.log('hghghg');
+      if(data && data.user){
+        userStore.saveUser({
+          id: data.user.id,
+          email: data.user.email as string,
+          name: userData[0].name,
+          role: data.user.role || null,
+          image: null
         })
         await router.push('/');
       }

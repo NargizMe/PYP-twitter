@@ -29,10 +29,8 @@ export interface IUser{
   image: string | null
 }
 
-// export interface IPost{
-//   tweet: string;
-//   retweet_count: number;
-//   save_count: number;
-//   user_id: string;
-//   image: string | null;
-// }
+export interface IResponse<T>{
+  status: 'error' | 'success' | 'pending';
+  data: null | T;
+  error: any;
+}

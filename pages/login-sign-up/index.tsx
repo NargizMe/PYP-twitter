@@ -4,7 +4,7 @@ import img from "../../assets/images/signin-image.jpeg";
 import { useState } from "react";
 import Login from "../../components/login-signup/Login";
 import SignUp from "../../components/login-signup/SignUp";
-import authScss from '../../styles/auth.module.scss';
+import authScss from '../../assets/auth.module.scss';
 
 export default function LoginSignUp() {
   const [tab, setTab] = useState(true);
@@ -12,8 +12,8 @@ export default function LoginSignUp() {
   return (
     <main className={authScss.authMain}>
       <section className={authScss.authContainer}>
-        <div>
-          <Image alt="signup-image image" src={img} width={50} height={50} />
+        <div className={authScss.authImgContainer}>
+          <Image alt="signup-image image" src={img}/>
         </div>
         <div>
           <div className={authScss.authButtonContainer}>

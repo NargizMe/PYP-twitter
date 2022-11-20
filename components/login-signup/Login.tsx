@@ -38,7 +38,7 @@ export default function Login() {
 
       if (userData) {
         userStore.saveUser({
-          id: userData[0].id,
+          id: userData[0].user_id,
           email: userData[0].email,
           name: userData[0].name,
           role: userData[0].role,

@@ -26,7 +26,6 @@ const userService = {
     if(imageSupa){
       fileName = Date.now().toString() + "-" + imageSupa.name.replaceAll(" ", "");
     }
-    console.log('save', fileName);
     const { data, error } = await supabase
       .from("users")
       .insert([{
@@ -44,12 +43,11 @@ const userService = {
 
   uploadImage: async (imageSupa: File | null, imgName:string) => {
     if(imageSupa){
-      console.log('upload', imgName);
       const { data: imageData, error: imageError } = await supabase.storage
         .from("images")
         .upload("public/" + imgName, imageSupa);
 
-      return { status: 'success', imageData, imageError }
+      return { status: 'success', imageData: {path: imageData!.path.slice(7)}, imageError }
     }
 
     return { status: 'fail', imageData: null, imageError:'imageSupa is null' }

@@ -24,6 +24,14 @@
   }
 }
 
+.authImgContainer{
+  width: 50%;
+  height: 100%;
+  span{
+    width: 100px;
+  }
+}
+
 .authActiveButton{
   background-color: var(--main-blue-color);
   color: white;
