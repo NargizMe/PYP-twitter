@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import img from "../../assets/images/me.jpg";
 import { BiComment } from "react-icons/bi";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
@@ -11,25 +10,24 @@ import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import { useUserState } from "../../state/user.state";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import postService from "../../services/post.service";
 import commentService from "../../services/comment.service";
 import { IComment, IPost } from "../../types/common.type";
 
 interface Props {
-  data: IPost;
+  data: IPost[];
 }
 
 export default function Post({ data }: Props) {
   const [like, setLike] = useState(false);
   const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState<IComment[]>([]);
   const userStore = useUserState();
 
   useEffect(() => {
     (async() => {
       let commentsData = await commentService.getComments();
       if(commentsData.status === 'success'){
-        setComments(commentsData.data)
+        setComments(commentsData.data!)
       }
     })()
   }, [])
@@ -53,16 +51,16 @@ export default function Post({ data }: Props) {
     if(post.status === 'success'){
       let commentsData = await commentService.getComments();
       if(commentsData.status === 'success'){
-        setComments(commentsData.data);
+        setComments(commentsData.data!);
         setComment('');
       }
     }
   }
 
   return (
-    data.map((item: IPost, i: number) => {
+    data.map((item: IPost) => {
       return (
-        <section className={postScss.postMain} key={i}>
+        <section className={postScss.postMain} key={item.user_id}>
           <div className={postScss.postProfileImgContainer}>
             {
               item.users?.image?

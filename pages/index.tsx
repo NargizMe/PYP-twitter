@@ -31,7 +31,7 @@ export default function Home() {
   function renderPosts() {
     if (postStore.payload.status === "success") {
       return (
-        <Post data={postStore.payload.data} />
+        <Post data={postStore.payload.data!} />
       );
     }
 

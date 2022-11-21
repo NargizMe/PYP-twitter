@@ -26,9 +26,12 @@ export interface IComment{
 
 export interface IUser{
   id: number;
+  user_id: string;
   email: string;
   name: string;
-  image: string | null
+  follower_count: number | null;
+  image: string | null;
+  about: string | null;
 }
 
 export interface IResponse<T>{

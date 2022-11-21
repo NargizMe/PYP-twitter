@@ -3,6 +3,21 @@ import { FormikValues } from "formik";
 import { IUser } from "../types/common.type";
 
 const userService = {
+  getUsers: async () => {
+    const { data, error } = await supabase
+      .from("users")
+      .select('*')
+
+    if (error) {
+      return { status: 'error', data: null, error }
+    }
+    if (data) {
+      return { status: 'success', data, error: null }
+    }
+
+    return { status: 'pending', data: null, error: null }
+  },
+
   getUser: async (email: string) => {
     const { data, error } = await supabase
       .from("users")

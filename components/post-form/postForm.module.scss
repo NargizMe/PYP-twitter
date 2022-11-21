@@ -5,6 +5,22 @@
   margin: 10px 0;
 }
 
+.defaultImg{
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: peachpuff;
+  border-radius: 3px;
+  margin-right: 13px;
+
+  p{
+    font-weight: bold;
+    color: darkblue;
+  }
+}
+
 .postForm {
   width: 745px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
@@ -41,22 +57,6 @@
   }
 }
 
-.defaultImg{
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: peachpuff;
-  border-radius: 3px;
-  margin-right: 13px;
-
-  p{
-    font-weight: bold;
-    color: darkblue;
-  }
-}
-
 .postFormUploadImg {
   margin: 13px 0;
   display: flex;
@@ -86,17 +86,29 @@
       display: none;
     }
   }
+}
 
-  button {
-    padding: 8px 25px;
-    background-color: var(--main-blue-color);
-    border: none;
-    border-radius: 3px;
-    color: white;
-    cursor: pointer;
+.postSubmit{
+  padding: 8px 25px;
+  background-color: var(--main-blue-color);
+  border: none;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
 
-    &:disabled{
-      background-color: var(--pale-gray-color);
-    }
+  &:disabled{
+    background-color: var(--pale-gray-color);
+  }
+
+}
+
+.cancelIcon{
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+
+  svg{
+    font-size: 20px;
+    color: tomato;
   }
 }

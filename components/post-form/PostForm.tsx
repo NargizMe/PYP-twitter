@@ -1,8 +1,7 @@
-import navScss from "../navbar/nav.module.scss";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import { MdOutlineImage } from "react-icons/md";
-import { ChangeEvent, useState } from "react";
+import { MdOutlineCancelPresentation, MdOutlineImage } from "react-icons/md";
+import React, { ChangeEvent, MouseEvent, useState } from "react";
 import postFormScss from "./postForm.module.scss";
 import postService from "../../services/post.service";
 import { useUserState } from "../../state/user.state";
@@ -14,6 +13,7 @@ export default function PostForm() {
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [imgVal, setImgVal] = useState('');
 
   const userState = useUserState();
   const postStore = usePostState();
@@ -23,6 +23,11 @@ export default function PostForm() {
     const localUrl = URL.createObjectURL(file);
     setUrl(localUrl);
     setFile(file);
+  }
+
+  function handleCancelImage(e: MouseEvent<HTMLButtonElement>){
+    setImgVal('');
+    setUrl('');
   }
 
   async function onPost(e: any) {
@@ -90,11 +95,19 @@ export default function PostForm() {
             type="file"
             id="img"
             name="img"
+            value={imgVal}
             accept="image/*"
             onChange={onUploadImage}
           />
         </label>
-        <button onClick={onPost} disabled={loading}>
+          {
+            url?
+              <button onClick={handleCancelImage} type='button' className={postFormScss.cancelIcon}>
+                <MdOutlineCancelPresentation />
+              </button>
+              :null
+          }
+        <button className={postFormScss.postSubmit} onClick={onPost} disabled={loading}>
           {loading ? "Tweeting" : "Tweet"}
         </button>
       </div>
