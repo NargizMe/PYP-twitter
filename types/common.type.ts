@@ -9,17 +9,19 @@ export interface IPost{
   user_id: string;
   post_id: string;
   comments: IComment[];
-  users: any;
+  users: IUser;
 }
 
 export interface IComment{
   id: number;
   comment_id: string;
   created_at: string;
-  text: string;
+  comment: string;
   like_count: number;
   user_id: string
-  user: IUser;
+  users: IUser;
+  post_id: string
+  posts: IPost;
 }
 
 export interface IUser{

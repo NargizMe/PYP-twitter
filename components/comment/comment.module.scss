@@ -5,16 +5,25 @@
   margin-top: 20px;
 }
 
-.commentImageContainer{
+.commentImage{
   width: 50px;
   height: 50px;
   border-radius: 3px;
-  display: flex;
+}
 
-  img{
-    width: 50px;
-    height: 50px;
-    border-radius: 3px;
+.defaultImg{
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: peachpuff;
+  border-radius: 3px;
+  margin-right: 13px;
+
+  p{
+    font-weight: bold;
+    color: darkblue;
   }
 }
 

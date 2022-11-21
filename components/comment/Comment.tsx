@@ -1,34 +1,51 @@
 import Image from "next/image";
 import img from "../../assets/images/me.jpg";
-import { AiOutlineHeart } from 'react-icons/ai';
-import commentScss from './comment.module.scss';
+import { AiOutlineHeart } from "react-icons/ai";
+import commentScss from "./comment.module.scss";
+import { IComment } from "../../types/common.type";
+import { format } from "date-fns";
+import postScss from "../post/post.module.scss";
+import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 
-export default function Comment(){
-    return(
-        <div className={commentScss.commentContainer}>
-            <div className={commentScss.commentImageContainer}>
-                <Image alt = 'profile image' src={img} width={50} height={50} />
-            </div>
-            <div>
-                <div className={commentScss.commentTextContainer}>
-                    <div className={commentScss.commentInfo}>
-                        <h4>Waqar Bloom</h4>
-                        <span>24 August at 20:43 </span>
-                    </div>
-                    <p>
-                        I’ve felt this pull many times, like while road tripping through Morocco. Seeking out the vastness of the desert, and looking inward at the same time.
-                    </p>
-                </div>
-                <div className={commentScss.commentLikeContainer}>
-                    <button>
-                        <AiOutlineHeart/>
-                        <span>Like</span>
-                    </button>
-                    <button>
-                        12k Likes
-                    </button>
-                </div>
-            </div>
+interface Props {
+  data: IComment;
+}
+
+export default function Comment({ data }: Props) {
+
+  function handleDateFormat(date: string) {
+    const newDate = new Date(date);
+    let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
+    return result;
+  }
+
+  return (
+    <div className={commentScss.commentContainer}>
+      {
+        data.users?.image ?
+          <img className={postScss.postProfileImg} alt="profile image"
+               src={`${PATH_TO_USER_IMAGE}/${data.users.image}`} />
+          :
+          <div className={postScss.defaultImg}>
+            <p>{data.users.name?.slice(0, 1).toLocaleUpperCase()}</p>
+          </div>
+      }
+      <div>
+        <div className={commentScss.commentTextContainer}>
+          <div className={commentScss.commentInfo}>
+            <h4>{data.users.name}</h4>
+            <span>{handleDateFormat(data.created_at)}</span>
+          </div>
+          <p>{data.comment}</p>
         </div>
-    )
+        <div className={commentScss.commentLikeContainer}>
+          <button>
+            <AiOutlineHeart />
+            <span>Like</span>
+          </button>
+          <button>{data.like_count} Likes</button>
+        </div>
+      </div>
+    </div>
+  );
 }

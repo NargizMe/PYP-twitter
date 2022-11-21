@@ -4,6 +4,7 @@ import { HiUserGroup } from "react-icons/hi";
 import { AiFillSetting } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import img from "../../assets/images/me.jpg";
+import logo from "../../assets/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -17,7 +18,6 @@ export default function Navbar() {
   const [dropDown, setDropDown] = useState(false);
   const userStore = useUserState();
   const isUser = userStore.user.id;
-  const router = useRouter();
 
   async function onLogOut() {
     const { error } = await userService.signOut();
@@ -33,7 +33,10 @@ export default function Navbar() {
 
   return (
     <header className={navScss.navHeader}>
-      <p>Twitter</p>
+      <div className={navScss.navLogo}>
+        <Image src={logo} alt="logo" width={40} height={40}/>
+        <p>TWITTER</p>
+      </div>
       <nav>
         <ul className={navScss.navList}>
           <li><Link href="/">

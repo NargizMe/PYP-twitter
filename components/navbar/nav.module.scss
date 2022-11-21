@@ -46,6 +46,16 @@
   }
 }
 
+.navLogo{
+  display: flex;
+  align-items: center;
+
+  p{
+    color: var(--main-blue-color);
+    margin-left: 13px;
+  }
+}
+
 .navProfile{
   position: relative;
 

@@ -47,6 +47,7 @@
       background-color: transparent;
       position: absolute;
       right: 13px;
+      cursor: pointer;
 
       svg {
         font-size: 17px;
@@ -77,6 +78,17 @@
     font-weight: bold;
     color: darkblue;
   }
+}
+
+.scrollableDiv{
+  float:right;
+  height: 350px;
+  width: 100%;
+}
+
+.scrollableContent{
+  overflow:auto;
+  height: 330px;
 }
 
 .postProfileInfo{
