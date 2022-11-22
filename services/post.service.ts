@@ -2,11 +2,18 @@ import supabase from "../config/supabaseClient";
 import { IPost, IResponse, IUser } from "../types/common.type";
 
 const postService = {
-  getPost: async (): Promise<IResponse<IPost[]>> => {
+  getPost: async (from: number = 0, to: number = 2): Promise<IResponse<IPost[]>> => {
     let { data, error } = await supabase
       .from("posts")
-      .select(`*, users(name, image)`)
-      .order('created_at', { ascending: false });
+      .select(`*, users(name, image), comments(*, users(name, image))`)
+      .order('created_at', {
+        foreignTable: 'comments',
+        ascending: false
+      })
+      .order('created_at', {
+        ascending: false
+      })
+      .range(from, to);
 
     if (error) {
       return { status: 'error', data: null, error }
@@ -16,6 +23,14 @@ const postService = {
     }
 
     return { status: 'pending', data: null, error: null }
+
+},
+
+  updatePost: async (name: IPost['retweet_count' | 'save_count'], count: number, id: IPost['post_id']) => {
+    let { data, error } = await supabase
+      .from(`${name}`)
+      .update({ name:  count})
+      .eq('post_id', id )
   },
 
   uploadImage: async (tweetImage: File | null) => {

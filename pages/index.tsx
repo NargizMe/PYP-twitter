@@ -1,11 +1,10 @@
 import supabase from "../config/supabaseClient";
 import PostForm from "../components/post-form/PostForm";
-import Post from "../components/post/Post";
+import Posts from "../components/posts/Posts";
 import WhoToFollow from "../components/who-to-follow/WhoToFollow";
 import { useUserState } from "../state/user.state";
 import postService from "../services/post.service";
 import { useEffect, useState } from "react";
-import { IPost, IResponse } from "../types/common.type";
 import { usePostState } from "../state/post.state";
 
 const mainStyles = {
@@ -23,7 +22,7 @@ export default function Home() {
   useEffect(() => {
     (async() => {
       let data = await postService.getPost();
-      postStore.setPayload(data)
+      postStore.setPayload(await data)
     })()
   }, [])
 
@@ -31,7 +30,7 @@ export default function Home() {
   function renderPosts() {
     if (postStore.payload.status === "success") {
       return (
-        <Post data={postStore.payload.data!} />
+        <Posts data={postStore.payload.data!} />
       );
     }
 
@@ -40,6 +39,8 @@ export default function Home() {
         <div>Error: Couldn't get any data</div>
       );
     }
+
+    return null;
   }
 
   return (

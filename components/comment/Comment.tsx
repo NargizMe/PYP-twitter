@@ -4,19 +4,31 @@ import { AiOutlineHeart } from "react-icons/ai";
 import commentScss from "./comment.module.scss";
 import { IComment } from "../../types/common.type";
 import { format } from "date-fns";
-import postScss from "../post/post.module.scss";
+import postScss from "../posts/post.module.scss";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
+import { useUserState } from "../../state/user.state";
 
 interface Props {
   data: IComment;
 }
 
 export default function Comment({ data }: Props) {
+  const userStore = useUserState();
 
   function handleDateFormat(date: string) {
     const newDate = new Date(date);
     let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
     return result;
+  }
+
+  function onLikeComment(){
+    if(!userStore.user.id){
+      window.location.href = "/login-sign-up";
+      return;
+    }
+    else{
+      // setLike(!like);
+    }
   }
 
   return (
@@ -39,7 +51,7 @@ export default function Comment({ data }: Props) {
           <p>{data.comment}</p>
         </div>
         <div className={commentScss.commentLikeContainer}>
-          <button>
+          <button onClick={() => onLikeComment()}>
             <AiOutlineHeart />
             <span>Like</span>
           </button>
