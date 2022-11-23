@@ -21,6 +21,7 @@ interface Props {
 export default function Post({ item }: Props) {
   const [like, setLike] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<IComment[]>([]);
   const [lazyComments, setLazyComments] = useState<IComment[]>([]);
@@ -29,34 +30,32 @@ export default function Post({ item }: Props) {
   const hiddenLineRef = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
 
-  useEffect(() => {
+  function handleDateFormat(date: string) {
+    const newDate = new Date(date);
+    let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
+    return result;
+  }
 
-    (async function() {
-      if (item.comments.length > 2) {
-        let options = {
-          root: null,
-          rootMargin: '0px',
-          threshold: 1.0
-        }
-
-        const request = await observerFn();
-
-        observer.current = new IntersectionObserver(request, options);
-        observer.current.observe(hiddenLineRef.current!)
+  async function scrollDetect(){
+    console.log('aaa');
+    if (item.comments.length > 2) {
+    console.log('bbb');
+      let options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0
       }
-    })()
 
-    return () => {
-      if(observer.current){
-        observer.current.disconnect();
-      }
+      const request = await observerFn();
+
+      observer.current = new IntersectionObserver(request, options);
+      observer.current.observe(hiddenLineRef.current!)
     }
-  }, [])
+  }
 
   async function observerFn() {
 
     let from = 3, to = 5;
-
     return async function(entries: any){
       if(entries[0].isIntersecting){
         let data = await commentService.getCommentsByPostId(from, to, item.post_id);
@@ -72,21 +71,15 @@ export default function Post({ item }: Props) {
           }
         }
 
-
         if(data.data?.length === 0){
           setShowSkeleton(false);
+          observer.current!.disconnect();
         }
 
         from+=3;
         to+=3;
       }
     }
-  }
-
-  function handleDateFormat(date: string) {
-    const newDate = new Date(date);
-    let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
-    return result;
   }
 
   function onLikePost(){
@@ -120,12 +113,8 @@ export default function Post({ item }: Props) {
   }
 
   function onShowComments(){
-    if(!userStore.user.id){
-
-    }
-    else{
-      // setLike(!like);
-    }
+    setShowComments(!showComments);
+    scrollDetect();
   }
 
   async function handleSendPost(post_id:string, user_id:string){
@@ -144,18 +133,17 @@ export default function Post({ item }: Props) {
       const post = await commentService.saveCommentToDB(payLoad);
 
       if(post.status === 'success'){
-        let commentsData = await commentService.getComments();
-        if(commentsData.status === 'success'){
-          setComments((prev: any) => prev.concat({
-            ...payLoad,
-            created_at: new Date(),
-            users: {
-              name: userStore.user.name,
-              image: userStore.user.image
-            }
-          }));
-          setComment('');
-        }
+        setComments((prev: any) => prev.concat({
+          ...payLoad,
+          created_at: new Date(),
+          users: {
+            name: userStore.user.name,
+            image: userStore.user.image
+          }
+        }));
+        setComment('');
+        setShowComments(true);
+        scrollDetect();
       }
     }
   }
@@ -228,44 +216,49 @@ export default function Post({ item }: Props) {
           </label>
         </div>
         <div className={postScss.line} />
-        <div className={postScss.scrollableDiv}>
-          <div className={postScss.scrollableContent}>
-            {
-              comments.map((comment: IComment) => {
-                return (
-                  comment.post_id === item.post_id ?
-                    <Comment data={comment} key={comment.comment_id} />
-                    : null
-                );
-              })
-            }
-            {
-              item.comments.map((comment: IComment) => {
-                return (
-                  comment.post_id === item.post_id ?
-                    <Comment data={comment} key={comment.comment_id} />
-                    : null
-                );
-              })
-            }
-            {
-              lazyComments.map((comment: IComment) => {
-                return (
-                  comment.post_id === item.post_id ?
-                    <Comment data={comment} key={comment.comment_id} />
-                    : null
-                );
-              })
-            }
-            {
-              item.comments.length > 2 && showSkeleton ?
-                <div ref={hiddenLineRef}>
-                  <CommentSkeleton/>
-                </div>
-              : null
-            }
+      {
+        showComments?
+          <div className={postScss.scrollableDiv}>
+            <div className={postScss.scrollableContent}>
+              {
+                comments.map((comment: IComment) => {
+                  return (
+                    comment.post_id === item.post_id ?
+                      <Comment data={comment} key={comment.comment_id} />
+                      : null
+                  );
+                })
+              }
+              {
+                item.comments.map((comment: IComment) => {
+                  return (
+                    comment.post_id === item.post_id ?
+                      <Comment data={comment} key={comment.comment_id} />
+                      : null
+                  );
+                })
+              }
+              {
+                lazyComments.map((comment: IComment) => {
+                  return (
+                    comment.post_id === item.post_id ?
+                      <Comment data={comment} key={comment.comment_id} />
+                      : null
+                  );
+                })
+              }
+              {
+                item.comments.length > 2 && showSkeleton ?
+                  <div ref={hiddenLineRef}>
+                    <CommentSkeleton/>
+                  </div>
+                  : null
+              }
+            </div>
           </div>
-        </div>
+        : null
+      }
+
   </section>
   )
 }
