@@ -13,6 +13,9 @@ const postService = {
       .order('created_at', {
         ascending: false
       })
+      .limit(3, {
+        foreignTable: 'comments'
+      })
       .range(from, to);
 
     if (error) {

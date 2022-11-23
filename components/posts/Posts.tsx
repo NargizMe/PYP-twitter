@@ -1,22 +1,25 @@
 import { IPost } from "../../types/common.type";
 import Post from "./Post";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import postService from "../../services/post.service";
 import { usePostState } from "../../state/post.state";
+import PostSkeleton from './PostSkeleton'
 
 interface Props {
   data: IPost[];
 }
 
 export default function Posts({ data }: Props) {
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const postStore = usePostState();
+
   const hiddenLineRef = useRef<HTMLDivElement | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    let observer: IntersectionObserver | null = null;
 
     (async function() {
-      if (data.length > 0) {
+      if (data.length > 2) {
         let options = {
           root: null,
           rootMargin: '0px',
@@ -25,26 +28,31 @@ export default function Posts({ data }: Props) {
 
         const request = await observerFn();
 
-        observer = new IntersectionObserver(request, options);
-        observer.observe(hiddenLineRef.current!)
+        observer.current = new IntersectionObserver(request, options);
+        observer.current.observe(hiddenLineRef.current!)
       }
     })()
 
     return () => {
-      if(observer){
-        observer.disconnect();
+      if(observer.current){
+        observer.current.disconnect();
       }
     }
-  }, [])
+  }, [data])
 
   async function observerFn() {
 
     let from = 3, to = 5;
 
-    return async function(entries: any, observer: any){
+    return async function(entries: any){
       if(entries[0].isIntersecting){
-        let data = await postService.getPost(from, to);
-        const payload = await data;
+        let payload = await postService.getPost(from, to);
+
+        if(payload.data?.length === 0){
+          setShowSkeleton(false);
+          observer.current!.disconnect();
+        }
+
         postStore.pushPayload(payload);
         from+=3;
         to+=3;
@@ -62,8 +70,10 @@ export default function Posts({ data }: Props) {
         );
       })}
       {
-        data.length > 0 ?
-          <div ref={hiddenLineRef} style={{backgroundColor: 'red', width: '100%', height: "13px"}}/>
+        data.length > 2 && showSkeleton ?
+          <div ref={hiddenLineRef}>
+            <PostSkeleton/>
+          </div>
           : null
       }
     </>

@@ -12,7 +12,7 @@ const mainStyles = {
   gridTemplateColumns: "745px 306px",
   justifyContent: "center",
   gridGap: "25px",
-  padding: "25px 0"
+  padding: "95px 0 25px 0"
 };
 
 export default function Home() {

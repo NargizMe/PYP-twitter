@@ -3,7 +3,6 @@ import { CgProfile } from "react-icons/cg";
 import { HiUserGroup } from "react-icons/hi";
 import { AiFillSetting } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import img from "../../assets/images/me.jpg";
 import logo from "../../assets/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +11,6 @@ import { useUserState } from "../../state/user.state";
 import userService from "../../services/user.service";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import navScss from './nav.module.scss';
-import { useRouter } from "next/router";
 
 export default function Navbar() {
   const [dropDown, setDropDown] = useState(false);

@@ -32,6 +32,9 @@
   justify-content: space-around;
   align-items: center;
   background-color: white;
+  position: fixed;
+  width: 100%;
+  box-shadow: 2px 7px 8px -5px rgba(0,0,0, 0.13);
 
   a {
     text-decoration: none;

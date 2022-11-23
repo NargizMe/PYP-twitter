@@ -6,7 +6,7 @@ import '../assets/styles.css'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <div style={{position: 'relative'}}>
       <Navbar/>
       <Component {...pageProps} />
       <footer style = {{padding: '25px 0'}}>

@@ -21,33 +21,66 @@ export default function Post({ item }: Props) {
   const [like, setLike] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<any>([]);
+  const [lazyComments, setLazyComments] = useState<IComment[]>([]);
   const userStore = useUserState();
 
-  const hiddenLineRef = useRef<HTMLDivElement | null>(null)
+  const hiddenLineRef = useRef<HTMLDivElement | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    let observer: IntersectionObserver | null = null;
-    if (item.comments.length > 3) {
-      let options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0
+
+    (async function() {
+      if (item.comments.length > 2) {
+        let options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 1.0
+        }
+
+        const request = await observerFn();
+
+        observer.current = new IntersectionObserver(request, options);
+        observer.current.observe(hiddenLineRef.current!)
       }
-
-      observer = new IntersectionObserver(observerFn, options);
-      observer.observe(hiddenLineRef.current!)
-    }
-
-    function observerFn(entries: any, observer: any) {
-      console.log('ent', entries[0].isIntersecting);
-    }
+    })()
 
     return () => {
-      if(observer){
-        observer.disconnect();
+      if(observer.current){
+        observer.current.disconnect();
       }
     }
   }, [])
+
+  async function observerFn() {
+
+    let from = 3, to = 5;
+
+    return async function(entries: any){
+      if(entries[0].isIntersecting){
+        let data = await commentService.getCommentsByPostId(from, to, item.post_id);
+
+        if(data.status === 'success'){
+          const payload = data.data!;
+
+          if(data.data?.length){
+            setLazyComments((prev: IComment[]) => [...prev, ...payload])
+          }
+          else{
+            observer.current!.disconnect();
+          }
+        }
+
+
+        // if(payload.data?.length === 0){
+        //   setShowSkeleton(false);
+        // }
+
+        // postStore.pushPayload(payload);
+        from+=3;
+        to+=3;
+      }
+    }
+  }
 
   function handleDateFormat(date: string) {
     const newDate = new Date(date);
@@ -206,7 +239,16 @@ export default function Post({ item }: Props) {
               })
             }
             {
-              item.comments.length > 3 ?
+              lazyComments.map((comment: IComment) => {
+                return (
+                  comment.post_id === item.post_id ?
+                    <Comment data={comment} key={comment.comment_id} />
+                    : null
+                );
+              })
+            }
+            {
+              item.comments.length > 2 ?
                 <div ref={hiddenLineRef} style={{backgroundColor: 'red', width: '100%', height: "13px"}}/>
               : null
             }
