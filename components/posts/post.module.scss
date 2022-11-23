@@ -88,6 +88,7 @@
 
 .scrollableContent{
   overflow:auto;
+  overscroll-behavior: contain;
   height: 330px;
 }
 

@@ -36,22 +36,36 @@ export default function Post({ item }: Props) {
     return result;
   }
 
-  async function scrollDetect(){
-    console.log('aaa');
-    if (item.comments.length > 2) {
-    console.log('bbb');
-      let options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0
+  useEffect(() => {
+    (async() => {
+      if (item.comments.length > 2 && showComments) {
+        console.log('bbb');
+        let options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 1.0
+        }
+
+        const request = await observerFn();
+
+        observer.current = new IntersectionObserver(request, options);
+        observer.current.observe(hiddenLineRef.current!)
       }
+      else{
+        observer.current?.disconnect();
+      }
+    })()
 
-      const request = await observerFn();
-
-      observer.current = new IntersectionObserver(request, options);
-      observer.current.observe(hiddenLineRef.current!)
+    return () => {
+      if(observer.current){
+        observer.current?.disconnect();
+      }
     }
-  }
+  }, [showComments])
+  // async function scrollDetect(){
+  //   console.log('aaa');
+  //
+  // }
 
   async function observerFn() {
 
@@ -65,9 +79,6 @@ export default function Post({ item }: Props) {
 
           if(data.data?.length){
             setLazyComments((prev: IComment[]) => [...prev, ...payload])
-          }
-          else{
-            observer.current!.disconnect();
           }
         }
 
@@ -114,7 +125,7 @@ export default function Post({ item }: Props) {
 
   function onShowComments(){
     setShowComments(!showComments);
-    scrollDetect();
+    // scrollDetect();
   }
 
   async function handleSendPost(post_id:string, user_id:string){
@@ -143,7 +154,7 @@ export default function Post({ item }: Props) {
         }));
         setComment('');
         setShowComments(true);
-        scrollDetect();
+        // scrollDetect();
       }
     }
   }
