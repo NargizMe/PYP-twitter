@@ -17,13 +17,12 @@ export default function Posts({ data }: Props) {
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-
     (async function() {
       if (data.length > 2) {
         let options = {
           root: null,
           rootMargin: '0px',
-          threshold: 1.0
+          threshold: 0.2
         }
 
         const request = await observerFn();
@@ -38,7 +37,7 @@ export default function Posts({ data }: Props) {
         observer.current.disconnect();
       }
     }
-  }, [data])
+  }, [])
 
   async function observerFn() {
 
@@ -48,14 +47,14 @@ export default function Posts({ data }: Props) {
       if(entries[0].isIntersecting){
         let payload = await postService.getPost(from, to);
 
-        if(payload.data?.length === 0){
+        if (payload.data?.length) {
+          postStore.pushPayload(payload);
+          from+=3;
+          to+=3;
+        } else {
           setShowSkeleton(false);
           observer.current!.disconnect();
         }
-
-        postStore.pushPayload(payload);
-        from+=3;
-        to+=3;
       }
     }
   }

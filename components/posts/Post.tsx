@@ -8,10 +8,11 @@ import Comment from "../comment/Comment";
 import postScss from './post.module.scss';
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import { useUserState } from "../../state/user.state";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import commentService from "../../services/comment.service";
 import { IComment, IPost } from "../../types/common.type";
+import CommentSkeleton from "./CommentSkeleton";
 
 interface Props {
   item: IPost;
@@ -19,8 +20,9 @@ interface Props {
 
 export default function Post({ item }: Props) {
   const [like, setLike] = useState(false);
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const [comment, setComment] = useState('');
-  const [comments, setComments] = useState<any>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
   const [lazyComments, setLazyComments] = useState<IComment[]>([]);
   const userStore = useUserState();
 
@@ -71,11 +73,10 @@ export default function Post({ item }: Props) {
         }
 
 
-        // if(payload.data?.length === 0){
-        //   setShowSkeleton(false);
-        // }
+        if(data.data?.length === 0){
+          setShowSkeleton(false);
+        }
 
-        // postStore.pushPayload(payload);
         from+=3;
         to+=3;
       }
@@ -112,6 +113,15 @@ export default function Post({ item }: Props) {
     if(!userStore.user.id){
       window.location.href = "/login-sign-up";
       return;
+    }
+    else{
+      // setLike(!like);
+    }
+  }
+
+  function onShowComments(){
+    if(!userStore.user.id){
+
     }
     else{
       // setLike(!like);
@@ -159,7 +169,7 @@ export default function Post({ item }: Props) {
                    src={`${PATH_TO_USER_IMAGE}/${item.users.image}`} />
               :
               <div className={postScss.defaultImg}>
-                <p>{item.users.name?.slice(0, 1).toLocaleUpperCase()}</p>
+                <p className={postScss.postParagraph}>{item.users.name?.slice(0, 1).toLocaleUpperCase()}</p>
               </div>
           }
           <div className={postScss.postProfileInfo}>
@@ -167,7 +177,7 @@ export default function Post({ item }: Props) {
             <span>{handleDateFormat(item.created_at)}</span>
           </div>
         </div>
-        <p>{item.tweet}</p>
+        <p className={postScss.postParagraph}>{item.tweet}</p>
         {
           item.image ?
             <div className={postScss.postImg}>
@@ -181,7 +191,7 @@ export default function Post({ item }: Props) {
           <li>{item.save_count} Saved</li>
         </ul>
         <div className={postScss.postIconContainer}>
-          <button>
+          <button onClick={onShowComments}>
             <BiComment />
             <span>Comment</span>
           </button>
@@ -207,7 +217,7 @@ export default function Post({ item }: Props) {
                    src={`${PATH_TO_USER_IMAGE}/${userStore.user.image}`} />
               :
               <div className={postScss.defaultImg}>
-                <p>{userStore.user.name?.slice(0, 1).toLocaleUpperCase()}</p>
+                <p className={postScss.postParagraph}>{userStore.user.name?.slice(0, 1).toLocaleUpperCase()}</p>
               </div>
           }
           <label>
@@ -248,8 +258,10 @@ export default function Post({ item }: Props) {
               })
             }
             {
-              item.comments.length > 2 ?
-                <div ref={hiddenLineRef} style={{backgroundColor: 'red', width: '100%', height: "13px"}}/>
+              item.comments.length > 2 && showSkeleton ?
+                <div ref={hiddenLineRef}>
+                  <CommentSkeleton/>
+                </div>
               : null
             }
           </div>

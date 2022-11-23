@@ -5,18 +5,18 @@
   margin: 10px 0;
 }
 
+.postParagraph{
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.035em;
+  color: var(--gray-second-color);
+  margin: 20px 0;
+}
+
 .postMain{
   background-color: white;
   padding: 20px;
   border-radius: 13px;
-
-  p {
-    font-size: 16px;
-    line-height: 22px;
-    letter-spacing: -0.035em;
-    color: var(--gray-second-color);
-    margin: 20px 0;
-  }
 }
 
 .postProfileImgContainer{
@@ -81,7 +81,7 @@
 }
 
 .scrollableDiv{
-  float:right;
+  //float:right;
   height: 350px;
   width: 100%;
 }

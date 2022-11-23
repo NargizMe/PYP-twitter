@@ -42,7 +42,7 @@ export default function Comment({ data }: Props) {
             <p>{data.users.name?.slice(0, 1).toLocaleUpperCase()}</p>
           </div>
       }
-      <div>
+      <div style={{width: "100%"}}>
         <div className={commentScss.commentTextContainer}>
           <div className={commentScss.commentInfo}>
             <h4>{data.users.name}</h4>
