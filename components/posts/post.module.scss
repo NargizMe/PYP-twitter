@@ -58,6 +58,7 @@
 }
 
 .postProfileImg{
+  object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 3px;
@@ -109,13 +110,14 @@
 }
 
 .postImg{
-  border-radius: 13px;
+  display: flex;
+  justify-content: center;
   max-width: 705px;
   height: 375px;
 
   img{
-    border-radius: 13px;
-    width: 100%;
+    object-fit: contain;
+    border-radius: 7px;
     height: 100%;
   }
 }

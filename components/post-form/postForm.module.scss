@@ -40,6 +40,7 @@
   display: flex;
 
   img {
+    object-fit: cover;
     width:40px;
     height: 40px;
     border-radius: 3px;
@@ -61,11 +62,36 @@
   margin: 13px 0;
   display: flex;
   justify-content: center;
+  position: relative;
+
+  &:hover > button{
+    display: block;
+    cursor: pointer;
+  }
 
   img {
-    border-radius: 13px;
-    max-width: 500px;
+    object-fit: contain;
+    border-radius: 7px;
     height: 300px;
+  }
+
+  button{
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+
+    svg{
+      color: #d7d7d7;
+      font-size: 30px;
+    }
   }
 }
 
@@ -98,17 +124,5 @@
 
   &:disabled{
     background-color: var(--pale-gray-color);
-  }
-
-}
-
-.cancelIcon{
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-
-  svg{
-    font-size: 20px;
-    color: tomato;
   }
 }

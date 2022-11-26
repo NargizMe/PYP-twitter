@@ -23,7 +23,7 @@ export default function LikeButton({ saveCount, postId, isLiked, onSaveDone }: P
     else{
       const likedRes = await postService.getSpecificLiked(post_id, userStore.user.id);
 
-      // status success means user already liked - do like
+      // status success means user did not like - do like
       if(likedRes.status === 'success') {
         await unLike(name, count, post_id)
       }

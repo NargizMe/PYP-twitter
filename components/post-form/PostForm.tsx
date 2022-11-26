@@ -62,6 +62,7 @@ export default function PostForm() {
           name: userState.user.name!,
           image: userState.user.image
         },
+        number_of_comments: [{ count: 0 }],
         comments: [],
         liked: []
       });
@@ -97,7 +98,10 @@ export default function PostForm() {
       {
         url ?
           <div className={postFormScss.postFormUploadImg}>
-            <Image src={url} alt="blah" width={500} height={300} />
+            <img src={url} alt="post photo"/>
+            <button onClick={handleCancelImage} type='button'>
+              <MdOutlineCancelPresentation />
+            </button>
           </div>
           : null
       }
@@ -113,13 +117,6 @@ export default function PostForm() {
             onChange={onUploadImage}
           />
         </label>
-          {
-            url?
-              <button onClick={handleCancelImage} type='button' className={postFormScss.cancelIcon}>
-                <MdOutlineCancelPresentation />
-              </button>
-              :null
-          }
         <button className={postFormScss.postSubmit} onClick={onPost} disabled={loading}>
           {loading ? "Tweeting" : "Tweet"}
         </button>

@@ -43,28 +43,24 @@
   }
 }
 
-.whoToFollowProfileImgContainer{
+.scrollableDiv{
+  height: 400px;
+  width: 100%;
+  overflow:auto;
+  overscroll-behavior: contain;
+}
+
+.scrollableContent{
+  height: 400px;
+  overflow:auto;
+  overscroll-behavior: contain;
+}
+
+.whoToFollowProfileProfileContainer{
   display: flex;
   align-items: center;
   margin-top: 24px;
-  //justify-content: space-between;
-
-  //label{
-  //  padding-right: 12px;
-  //  display: flex;
-  //  justify-content: space-between;
-  //  align-items: center;
-  //  border-radius: 7px;
-  //  background: #FAFAFA;
-  //  border: 1px solid var(--background-gray-color);
-  //  width: 100%;
-  //
-  //  input{
-  //    padding: 12px;
-  //    border: none;
-  //    background: #FAFAFA;
-  //  }
-  //}
+  justify-content: space-between;
 
   button{
     border: none;
@@ -72,7 +68,7 @@
     padding: 7px 13px;
     display: flex;
     align-items: center;
-    margin-left: 77px;
+    text-align: center;
     gap: 5px;
     color: white;
     background-color: var(--main-blue-color);
@@ -80,7 +76,15 @@
   }
 }
 
+.whoToFollowProfileImgContainer{
+  display: flex;
+  img{
+    margin-right: 13px;
+  }
+}
+
 .whoToFollowProfileImg{
+  object-fit: cover;
   width: 40px;
   height: 40px;
   border-radius: 3px;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, FormikValues } from "formik";
 import * as Yup from "yup";
 import { MdEmail } from "react-icons/md";
@@ -22,11 +22,13 @@ const DisplayingErrorMessagesSchema = Yup.object().shape({
 // }
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
+
   const userStore = useUserState();
   const router = useRouter();
 
   async function onSubmit(values: FormikValues) {
-
+    setLoading(true);
     const { data, error } = await userService.signin(values);
 
     if (error) {
@@ -77,7 +79,11 @@ export default function Login() {
             />
             {touched.password && errors.password && <span className={loginScss.logSignErrorSpan}>{errors.password}</span>}
           </div>
-          <button type="submit" className={loginScss.loginButton}>Submit</button>
+          <button type="submit" className={loginScss.loginSignButton} disabled={loading}>
+            {
+              loading? 'Submiting' : 'Submit'
+            }
+          </button>
         </Form>
       )}
     </Formik>

@@ -8,6 +8,7 @@ export interface IPost{
   post_id: string;
   comments: IComment[];
   liked: ILiked[];
+  number_of_comments: Array<{count: number}>;
   users: {
     name: IUser['name'];
     image: IUser['image'];
@@ -15,7 +16,13 @@ export interface IPost{
 }
 
 export interface ILiked{
-  user_id: IUser['user_id'],
+  user_id: IUser['user_id'];
+}
+
+export interface IFollowed{
+  followed_id: IUser['user_id'];
+  follower_id: IUser['user_id'];
+  follow_id: string;
 }
 
 export interface IPostRequest{

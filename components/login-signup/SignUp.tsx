@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { MdEmail, MdOutlineImage, MdOutlineCancelPresentation } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
-import Image from "next/image";
 import userService from "../../services/user.service";
 import { useUserState } from "../../state/user.state";
 import { useRouter } from "next/router";
@@ -23,6 +22,8 @@ const DisplayingErrorMessagesSchema = Yup.object().shape({
 });
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
   const userStore = useUserState();
 
@@ -45,7 +46,7 @@ export default function SignUp() {
   }
 
   async function onSubmit(values: FormikValues) {
-
+    setLoading(true);
     const { data, error } = await userService.createUser(values);
 
     if (error) {
@@ -53,7 +54,7 @@ export default function SignUp() {
       return;
     }
 
-    // save to my users table
+    // save to my "users" table
     const { userData, userError} = await userService.saveUserToDB(values, imageSupa, data.user!.id)
 
     if (userError) {
@@ -65,9 +66,8 @@ export default function SignUp() {
     if(userData || imageSupa?.name){
       check = userData.find((item) => item.image?.includes(imageSupa!.name.replaceAll(" ", '')));
     }
-    console.log('chec', check);
+
     if(check && check.image){
-      console.log('mmmm');
       // if image selected and users table is success -> upload an image
       const { status, imageData, imageError } = await userService.uploadImage(imageSupa, check.image );
 
@@ -82,7 +82,6 @@ export default function SignUp() {
         await router.push('/');
       }
     } else{
-      console.log('hghghg');
       if(data && data.user){
         userStore.saveUser({
           id: data.user.id,
@@ -149,15 +148,19 @@ export default function SignUp() {
             {
               url?
                 <div>
-                  <Image src={url} alt='blah' width={200} height={100} />
+                  <img src={url} alt='profile photo' />
                   <button onClick={handleCancelImage}>
                     <MdOutlineCancelPresentation/>
                   </button>
                 </div>
                 :null
             }
-            <button type="submit">Submit</button>
           </div>
+          <button className={signScss.loginSignButton} type="submit" disabled={loading}>
+            {
+              loading? 'Submiting' : 'Submit'
+            }
+          </button>
         </Form>
       )}
     </Formik>

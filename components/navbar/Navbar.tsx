@@ -78,7 +78,7 @@ export default function Navbar() {
                   <li>
                     <Link href={"/group-chat"}>
                       <a><HiUserGroup />
-                        <span>Group chat</span></a>
+                        <span>Friends</span></a>
                     </Link>
                   </li>
                   <li>

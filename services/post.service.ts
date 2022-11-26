@@ -1,12 +1,14 @@
 import supabase from "../config/supabaseClient";
 import { IPost, IResponse, IUser } from "../types/common.type";
+import { v4 as uuidv4 } from "uuid";
 
 const postService = {
   getPost: async (from: number = 0, to: number = 2, userId: IUser['user_id']): Promise<IResponse<IPost[]>> => {
+
     let { data, error } = await supabase
       .from("posts")
-      .select(`*, users(name, image), comments(*, users(name, image)), liked(user_id)`)
-      .eq('liked.user_id', userId)
+      .select(`*, users(name, image), comments(*, users(name, image)), number_of_comments:comments(count), liked(user_id)`)
+      .eq('liked.user_id', userId || uuidv4())
       .order('created_at', {
         foreignTable: 'comments',
         ascending: false
@@ -19,6 +21,7 @@ const postService = {
       })
       .range(from, to);
 
+    console.log(data);
     if (error) {
       return { status: 'error', data: null, error }
     }
@@ -70,8 +73,6 @@ const postService = {
 
     return { status: 'success', data: values, error: null }
   },
-
-
 
   saveLikedtoDB: async (post_id: IPost['post_id'], user_id: IUser['user_id']):Promise<IResponse<unknown>> => {
     const { data, error } = await supabase

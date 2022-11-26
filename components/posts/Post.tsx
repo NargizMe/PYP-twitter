@@ -136,7 +136,6 @@ export default function Post({ item }: Props) {
     }
   }
 
-  console.log(item.comments.length);
   return (
     <section className={postScss.postMain}>
         <div className={postScss.postProfileImgContainer}>
@@ -163,7 +162,7 @@ export default function Post({ item }: Props) {
             : null
         }
         <ul className={postScss.postInfo}>
-          <li>{item.comments.length} Comments</li>
+          <li>{item.number_of_comments[0].count} Comments</li>
           <li>{item.retweet_count} Retweet</li>
           <li ref={likeCountRef}>{item.like_count} Like</li>
         </ul>
@@ -181,10 +180,6 @@ export default function Post({ item }: Props) {
             postId={item.post_id}
             isLiked={userStore.user.id ? item.liked.some(l => l.user_id === userStore.user.id) : false}
             onSaveDone={onSaveDone} />
-          {/*<button onClick={() => onSavePost('like_count', item.like_count+1, item.post_id)}>*/}
-          {/*  <VscSave />*/}
-          {/*  <span>Save</span>*/}
-          {/*</button>*/}
         </div>
         <div className={postScss.postProfileImgContainer}>
           {
@@ -206,6 +201,7 @@ export default function Post({ item }: Props) {
         <div className={postScss.line} />
       {
         showComments?
+          // <Comments item={item} showComments={showComments} comments={comments}/>
           <div
             className={postScss.scrollableDiv}
             style={
@@ -254,7 +250,6 @@ export default function Post({ item }: Props) {
           </div>
         : null
       }
-
   </section>
   )
 }
