@@ -7,6 +7,7 @@ import postService from "../../services/post.service";
 import { useUserState } from "../../state/user.state";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import { usePostState } from "../../state/post.state";
+import { IPost, IPostRequest } from "../../types/common.type";
 
 export default function PostForm() {
   const [url, setUrl] = useState("");
@@ -35,11 +36,15 @@ export default function PostForm() {
 
     setLoading(true);
 
-    const payLoad = {
+    const payloadCreatedAt = new Date();
+    const payLoad: IPostRequest = {
       tweet: tweet,
       image: "",
-      user_id: userState.user.id,
-      post_id: uuidv4()
+      user_id: userState.user.id!,
+      post_id: uuidv4(),
+      retweet_count: 0,
+      like_count: 0,
+      created_at: payloadCreatedAt,
     };
     const upLoad = await postService.uploadImage(file);
 
@@ -50,8 +55,16 @@ export default function PostForm() {
     const post = await postService.savePostToDB(payLoad);
 
     if (post.status === "success") {
-      const allPosts = await postService.getPost();
-      postStore.setPayload(allPosts);
+      postStore.pushSinglePayload({
+        ...payLoad,
+        created_at: payloadCreatedAt.toString(),
+        users: {
+          name: userState.user.name!,
+          image: userState.user.image
+        },
+        comments: [],
+        liked: []
+      });
 
       setUrl("");
       setTweet("");

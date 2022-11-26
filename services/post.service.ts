@@ -2,10 +2,11 @@ import supabase from "../config/supabaseClient";
 import { IPost, IResponse, IUser } from "../types/common.type";
 
 const postService = {
-  getPost: async (from: number = 0, to: number = 2): Promise<IResponse<IPost[]>> => {
+  getPost: async (from: number = 0, to: number = 2, userId: IUser['user_id']): Promise<IResponse<IPost[]>> => {
     let { data, error } = await supabase
       .from("posts")
-      .select(`*, users(name, image), comments(*, users(name, image))`)
+      .select(`*, users(name, image), comments(*, users(name, image)), liked(user_id)`)
+      .eq('liked.user_id', userId)
       .order('created_at', {
         foreignTable: 'comments',
         ascending: false
@@ -26,14 +27,23 @@ const postService = {
     }
 
     return { status: 'pending', data: null, error: null }
+  },
 
-},
-
-  updatePost: async (name: IPost['retweet_count' | 'save_count'], count: number, id: IPost['post_id']) => {
+  updatePost: async (name: 'retweet_count' | 'like_count', count: number, id: IPost['post_id']) => {
     let { data, error } = await supabase
-      .from(`${name}`)
-      .update({ name:  count})
+      .from(`posts`)
+      .update({ [name] :  count})
       .eq('post_id', id )
+      .select()
+
+    if (error) {
+      return { status: 'error', data: null, error }
+    }
+    if (data) {
+      return { status: 'success', data, error: null }
+    }
+
+    return { status: 'pending', data: null, error: null }
   },
 
   uploadImage: async (tweetImage: File | null) => {
@@ -59,6 +69,69 @@ const postService = {
     }
 
     return { status: 'success', data: values, error: null }
+  },
+
+
+
+  saveLikedtoDB: async (post_id: IPost['post_id'], user_id: IUser['user_id']):Promise<IResponse<unknown>> => {
+    const { data, error } = await supabase
+      .from("liked")
+      .insert([{post_id, user_id}])
+
+    if(error){
+      return { status: 'error', data: null, error }
+    }
+
+    return { status: 'success', data: {post_id, user_id}, error: null }
+  },
+
+  deleteLikedFromDB: async (post_id: IPost['post_id'], user_id: IUser['user_id']):Promise<IResponse<unknown>> => {
+    const { data, error } = await supabase
+      .from('liked')
+      .delete()
+      .eq( 'post_id', post_id)
+      .eq('user_id', user_id)
+
+    if(error){
+      return { status: 'error', data: null, error }
+    }
+
+    return { status: 'success', data: {post_id, user_id}, error: null }
+  },
+
+  getLiked: async (): Promise<any> => {
+    let { data, error } = await supabase
+      .from("liked")
+      .select(`*, posts(*, users(name, image))`)
+      .order('created_at', {
+        ascending: false
+      })
+
+    if (error) {
+      return { status: 'error', data: null, error }
+    }
+    if (data) {
+      return { status: 'success', data, error: null }
+    }
+
+    return { status: 'pending', data: null, error: null }
+  },
+
+  getSpecificLiked: async (post_id: IPost['post_id'], user_id: IUser['user_id']): Promise<IResponse<any>> => {
+    let { data, error } = await supabase
+      .from("liked")
+      .select(`*`)
+      .eq( 'post_id', post_id)
+      .eq('user_id', user_id)
+
+    if (error || (data && !data.length)) {
+      return { status: 'error', data: null, error }
+    }
+    if (data && data.length) {
+      return { status: 'success', data, error: null }
+    }
+
+    return { status: 'pending', data: null, error: null }
   },
 }
 

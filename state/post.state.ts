@@ -6,6 +6,7 @@ interface IPostState {
   payload: IResponse<IPost[]>;
   setPayload: (payload: IPostState["payload"]) => void;
   pushPayload: (payload: IPostState["payload"]) => void;
+  pushSinglePayload: (payload: IPost) => void;
 }
 
 export const usePostState = create<IPostState>((set, get) => ({
@@ -16,6 +17,15 @@ export const usePostState = create<IPostState>((set, get) => ({
   pushPayload: (payload) => {
     const newList = [...get().payload.data!, ...payload.data!]
     set({ payload: { ...payload, data: newList } })
+  },
+  pushSinglePayload: (payload) => {
+    const list = get().payload;
+    if(Array.isArray(list.data)){
+      set({ payload: { ...list, data: [payload, ...list.data] } })
+    }
+    else{
+      set({ payload: { ...list, data: [payload] } })
+    }
   }
 }));
 

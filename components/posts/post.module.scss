@@ -81,15 +81,16 @@
 }
 
 .scrollableDiv{
-  //float:right;
-  height: 350px;
+  //height: 350px;
   width: 100%;
+  overflow:auto;
+  overscroll-behavior: contain;
 }
 
 .scrollableContent{
   overflow:auto;
   overscroll-behavior: contain;
-  height: 330px;
+  height: 100%;
 }
 
 .postProfileInfo{

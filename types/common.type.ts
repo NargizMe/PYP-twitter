@@ -1,15 +1,31 @@
 export interface IPost{
-  id: number;
   created_at: string;
   tweet: string;
   image: string | null;
-  comment_count: number;
-  save_count: number;
+  like_count: number;
   retweet_count: number;
-  user_id: string;
+  user_id: IUser['user_id'];
   post_id: string;
   comments: IComment[];
-  users: IUser;
+  liked: ILiked[];
+  users: {
+    name: IUser['name'];
+    image: IUser['image'];
+  };
+}
+
+export interface ILiked{
+  user_id: IUser['user_id'],
+}
+
+export interface IPostRequest{
+  created_at: Date;
+  tweet: string;
+  image: string | null;
+  like_count: number;
+  retweet_count: number;
+  user_id: IUser['user_id'];
+  post_id: string;
 }
 
 export interface IComment{

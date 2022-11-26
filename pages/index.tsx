@@ -21,7 +21,7 @@ export default function Home() {
 
   useEffect(() => {
     (async() => {
-      let data = await postService.getPost();
+      let data = await postService.getPost(0, 2, userStore.user.id!);
       postStore.setPayload(await data)
     })()
   }, [])

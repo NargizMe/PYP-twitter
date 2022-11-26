@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import postService from "../../services/post.service";
 import { usePostState } from "../../state/post.state";
 import PostSkeleton from './PostSkeleton'
+import { useUserState } from "../../state/user.state";
 
 interface Props {
   data: IPost[];
@@ -12,6 +13,7 @@ interface Props {
 export default function Posts({ data }: Props) {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const postStore = usePostState();
+  const userStore = useUserState();
 
   const hiddenLineRef = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
@@ -45,7 +47,7 @@ export default function Posts({ data }: Props) {
 
     return async function(entries: any){
       if(entries[0].isIntersecting){
-        let payload = await postService.getPost(from, to);
+        let payload = await postService.getPost(from, to, userStore.user.id!);
 
         if (payload.data?.length) {
           postStore.pushPayload(payload);

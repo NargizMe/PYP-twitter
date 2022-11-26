@@ -1,25 +1,23 @@
 import { format } from "date-fns";
 import { BiComment } from "react-icons/bi";
 import { AiOutlineRetweet } from "react-icons/ai";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { VscSave } from "react-icons/vsc";
 import { RiSendPlaneLine } from "react-icons/ri";
 import Comment from "../comment/Comment";
 import postScss from './post.module.scss';
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import { useUserState } from "../../state/user.state";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import commentService from "../../services/comment.service";
 import { IComment, IPost } from "../../types/common.type";
 import CommentSkeleton from "./CommentSkeleton";
+import LikeButton from "../like-button/LikeButton";
 
 interface Props {
   item: IPost;
 }
 
 export default function Post({ item }: Props) {
-  const [like, setLike] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
@@ -29,17 +27,11 @@ export default function Post({ item }: Props) {
 
   const hiddenLineRef = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
-
-  function handleDateFormat(date: string) {
-    const newDate = new Date(date);
-    let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
-    return result;
-  }
+  const likeCountRef = useRef<HTMLLIElement | null>(null)
 
   useEffect(() => {
     (async() => {
       if (item.comments.length > 2 && showComments) {
-        console.log('bbb');
         let options = {
           root: null,
           rootMargin: '0px',
@@ -62,10 +54,6 @@ export default function Post({ item }: Props) {
       }
     }
   }, [showComments])
-  // async function scrollDetect(){
-  //   console.log('aaa');
-  //
-  // }
 
   async function observerFn() {
 
@@ -93,24 +81,10 @@ export default function Post({ item }: Props) {
     }
   }
 
-  function onLikePost(){
-    if(!userStore.user.id){
-      window.location.href = "/login-sign-up";
-      return;
-    }
-    else{
-      setLike(!like);
-    }
-  }
-
-  function onSavePost(){
-    if(!userStore.user.id){
-      window.location.href = "/login-sign-up";
-      return;
-    }
-    else{
-      // setLike(!like);
-    }
+  function handleDateFormat(date: string) {
+    const newDate = new Date(date);
+    let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
+    return result;
   }
 
   function onReTweetPost(){
@@ -123,10 +97,10 @@ export default function Post({ item }: Props) {
     }
   }
 
-  function onShowComments(){
-    setShowComments(!showComments);
-    // scrollDetect();
-  }
+  const onSaveDone = useCallback((status: boolean) => {
+    const likeCount = likeCountRef.current?.innerText.split(" ")[0] as string;
+    likeCountRef.current!.innerText = `${status? +likeCount+1: +likeCount-1} Like`
+  },[])
 
   async function handleSendPost(post_id:string, user_id:string){
     if(!userStore.user.id){
@@ -144,14 +118,17 @@ export default function Post({ item }: Props) {
       const post = await commentService.saveCommentToDB(payLoad);
 
       if(post.status === 'success'){
-        setComments((prev: any) => prev.concat({
-          ...payLoad,
-          created_at: new Date(),
-          users: {
-            name: userStore.user.name,
-            image: userStore.user.image
-          }
-        }));
+        setComments((prev: any) => [
+          {
+            ...payLoad,
+            created_at: new Date(),
+            users: {
+              name: userStore.user.name,
+              image: userStore.user.image
+            }
+          },
+          ...prev
+        ]);
         setComment('');
         setShowComments(true);
         // scrollDetect();
@@ -159,6 +136,7 @@ export default function Post({ item }: Props) {
     }
   }
 
+  console.log(item.comments.length);
   return (
     <section className={postScss.postMain}>
         <div className={postScss.postProfileImgContainer}>
@@ -185,12 +163,12 @@ export default function Post({ item }: Props) {
             : null
         }
         <ul className={postScss.postInfo}>
-          <li>{item.comment_count} Comments</li>
+          <li>{item.comments.length} Comments</li>
           <li>{item.retweet_count} Retweet</li>
-          <li>{item.save_count} Saved</li>
+          <li ref={likeCountRef}>{item.like_count} Like</li>
         </ul>
         <div className={postScss.postIconContainer}>
-          <button onClick={onShowComments}>
+          <button onClick={() => setShowComments(!showComments)}>
             <BiComment />
             <span>Comment</span>
           </button>
@@ -198,16 +176,15 @@ export default function Post({ item }: Props) {
             <AiOutlineRetweet />
             <span>Retweet</span>
           </button>
-          <button onClick={() => onLikePost()}>
-            {
-              like ? <BsHeartFill /> : <BsHeart />
-            }
-            <span>Like</span>
-          </button>
-          <button onClick={() => onSavePost()}>
-            <VscSave />
-            <span>Save</span>
-          </button>
+          <LikeButton
+            saveCount={item.like_count}
+            postId={item.post_id}
+            isLiked={userStore.user.id ? item.liked.some(l => l.user_id === userStore.user.id) : false}
+            onSaveDone={onSaveDone} />
+          {/*<button onClick={() => onSavePost('like_count', item.like_count+1, item.post_id)}>*/}
+          {/*  <VscSave />*/}
+          {/*  <span>Save</span>*/}
+          {/*</button>*/}
         </div>
         <div className={postScss.postProfileImgContainer}>
           {
@@ -229,7 +206,15 @@ export default function Post({ item }: Props) {
         <div className={postScss.line} />
       {
         showComments?
-          <div className={postScss.scrollableDiv}>
+          <div
+            className={postScss.scrollableDiv}
+            style={
+              [...comments, ...item.comments].length>2? {height: '350px'}:
+              [...comments, ...item.comments].length===1? {height: '150px'}:
+              [...comments, ...item.comments].length===2? {height: '281px'}:
+                {height: '0'}
+            }
+          >
             <div className={postScss.scrollableContent}>
               {
                 comments.map((comment: IComment) => {
