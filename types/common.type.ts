@@ -52,7 +52,7 @@ export interface IUser{
   user_id: string;
   email: string;
   name: string;
-  follower_count: number | null;
+  followed: Array<{ follower_id: IFollowed['follower_id'] }>;
   image: string | null;
   about: string | null;
 }

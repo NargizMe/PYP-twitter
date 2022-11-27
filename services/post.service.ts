@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const postService = {
   getPost: async (from: number = 0, to: number = 2, userId: IUser['user_id']): Promise<IResponse<IPost[]>> => {
-
     let { data, error } = await supabase
       .from("posts")
       .select(`*, users(name, image), comments(*, users(name, image)), number_of_comments:comments(count), liked(user_id)`)
@@ -21,7 +20,6 @@ const postService = {
       })
       .range(from, to);
 
-    console.log(data);
     if (error) {
       return { status: 'error', data: null, error }
     }

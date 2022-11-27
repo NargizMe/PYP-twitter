@@ -9,9 +9,10 @@ import { useUserState } from "../../state/user.state";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import commentService from "../../services/comment.service";
-import { IComment, IPost } from "../../types/common.type";
+import { IComment, IPost, IPostRequest } from "../../types/common.type";
 import CommentSkeleton from "./CommentSkeleton";
 import LikeButton from "../like-button/LikeButton";
+import postService from "../../services/post.service";
 
 interface Props {
   item: IPost;
@@ -93,7 +94,7 @@ export default function Post({ item }: Props) {
       return;
     }
     else{
-      // setLike(!like);
+
     }
   }
 

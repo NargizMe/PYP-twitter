@@ -65,9 +65,7 @@ export default function Posts({ data }: Props) {
     <>
       {data.map((item: IPost) => {
         return (
-          <>
-            <Post item={item} key={item.post_id} />
-          </>
+          <Post item={item} key={item.post_id} />
         );
       })}
       {

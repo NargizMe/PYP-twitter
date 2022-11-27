@@ -7,7 +7,7 @@ import postService from "../../services/post.service";
 import { useUserState } from "../../state/user.state";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import { usePostState } from "../../state/post.state";
-import { IPost, IPostRequest } from "../../types/common.type";
+import { IPostRequest } from "../../types/common.type";
 
 export default function PostForm() {
   const [url, setUrl] = useState("");

@@ -6,7 +6,7 @@ const userService = {
   getUsers: async () => {
     const { data, error } = await supabase
       .from("users")
-      .select('*')
+      .select(`*, followed(follower_id)`)
 
     if (error) {
       return { status: 'error', data: null, error }
