@@ -5,13 +5,13 @@ import { useState } from "react";
 import { IPost } from "../../types/common.type";
 
 interface Props{
-  saveCount: IPost['like_count'];
+  likeCount: number;
   postId: IPost['post_id'];
   isLiked: boolean;
   onSaveDone: (status: boolean) => void;
 }
 
-export default function LikeButton({ saveCount, postId, isLiked, onSaveDone }: Props){
+export default function LikeButton({ likeCount, postId, isLiked, onSaveDone }: Props){
   const [likeStatus, setLikeStatus] = useState(isLiked);
 
   const userStore = useUserState();
@@ -83,7 +83,7 @@ export default function LikeButton({ saveCount, postId, isLiked, onSaveDone }: P
   }
 
   return(
-    <button onClick={() => onLikePost('like_count', saveCount, postId)}>
+    <button onClick={() => onLikePost('like_count', likeCount, postId)}>
       {
         likeStatus ? <BsHeartFill style={{ color: "red" }} /> : <BsHeart />
       }

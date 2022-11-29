@@ -13,7 +13,6 @@ export default function WhoToFollow() {
   useEffect(() => {
     (async() => {
       let usersData = await userService.getUsers();
-      console.log(usersData);
       if(usersData.status === 'success' && usersData.data){
         setUsers(usersData.data);
       }

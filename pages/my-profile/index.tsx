@@ -2,36 +2,47 @@ import mainScss from '../../assets/main.module.scss';
 import SearchingInMyProfile from "../../components/searching-in-my-profile/SearchingInMyProfile";
 import { useUserState } from "../../state/user.state";
 import { usePostState } from "../../state/post.state";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import postService from "../../services/post.service";
 import Posts from "../../components/posts/Posts";
+import { useLikedState } from "../../state/liked.state";
+import { IPost, IResponse } from "../../types/common.type";
 
 export default function MyProfile() {
+  const [list, setList] = useState<IPost[]>([]);
 
   const userStore = useUserState();
   const postStore = usePostState();
+  const likedStore = useLikedState();
 
   useEffect(() => {
-    (async() => {
-      let data = await postService.getPost(0, 2, userStore.user.id!);
-      postStore.setPayload(await data)
-    })()
-  }, [])
 
-  function renderPosts() {
-    if (postStore.payload.status === "success") {
-      return (
-        <Posts data={postStore.payload.data!} />
-      );
+    getDataByFilteredWord();
+  }, [likedStore.payload])
+
+  function renderPosts(data: IResponse<IPost[]>) {
+    if (data.status === "success") {
+      setList(data.data!);
     }
 
-    if (postStore.payload.status === "error") {
-      return (
-        <div>Error: Couldn't get any data</div>
-      );
-    }
+    if (data.status === "error") {
 
-    return null;
+    }
+  }
+
+  async function getDataByFilteredWord(){
+    if(likedStore.payload === 'tweet'){
+      let response = await postService.getUsersPosts(0, 2, userStore.user.id!);
+      renderPosts(response);
+    }
+    if(likedStore.payload === 'liked'){
+      let response = await postService.getLikedPosts(0, 2, userStore.user.id!);
+      const normalizedData = {
+        ...response,
+        data: Array.isArray(response.data) ? response.data.map((obj) => obj.posts) : []
+      }
+      renderPosts(normalizedData);
+    }
   }
 
   return (
@@ -40,7 +51,7 @@ export default function MyProfile() {
         <SearchingInMyProfile/>
       </div>
       <div>
-        {renderPosts()}
+        <Posts data={list} />
       </div>
     </main>
   );

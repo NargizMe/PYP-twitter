@@ -1,12 +1,12 @@
 import supabase from "../config/supabaseClient.supabase";
-import { IPost, IResponse, IUser } from "../types/common.type";
+import { ILiked, ILikedPosts, IPost, IResponse, IUser } from "../types/common.type";
 import { v4 as uuidv4 } from "uuid";
 
 const postService = {
   getPost: async (from: number = 0, to: number = 2, userId: IUser['user_id']): Promise<IResponse<IPost[]>> => {
     let { data, error } = await supabase
       .from("posts")
-      .select(`*, users(name, image), comments(*, users(name, image)), number_of_comments:comments(count), liked(user_id)`)
+      .select(`*, users(name, image), comments(*, users(name, image)), number_of_comments:comments(count), liked(user_id), number_of_likes:liked(count)`)
       .eq('liked.user_id', userId || uuidv4())
       .order('created_at', {
         foreignTable: 'comments',
@@ -20,6 +20,63 @@ const postService = {
       })
       .range(from, to);
 
+    if (error) {
+      return { status: 'error', data: null, error }
+    }
+    if (data) {
+      return { status: 'success', data, error: null }
+    }
+
+    return { status: 'pending', data: null, error: null }
+  },
+
+  getUsersPosts: async (from: number = 0, to: number = 2, userId: IUser['user_id']): Promise<IResponse<IPost[]>> => {
+    let { data, error } = await supabase
+      .from("posts")
+      .select(`*, users(name, image), comments(*, users(name, image)), number_of_comments:comments(count), liked(user_id), number_of_likes:liked(count)`)
+      .eq('liked.user_id', userId || uuidv4())
+      .eq('user_id', userId)
+      .order('created_at', {
+        foreignTable: 'comments',
+        ascending: false
+      })
+      .order('created_at', {
+        ascending: false
+      })
+      .limit(3, {
+        foreignTable: 'comments'
+      })
+      .range(from, to);
+
+    if (error) {
+      return { status: 'error', data: null, error }
+    }
+    if (data) {
+      return { status: 'success', data, error: null }
+    }
+
+    return { status: 'pending', data: null, error: null }
+  },
+
+  getLikedPosts: async (from: number = 0, to: number = 2, userId: IUser['user_id']): Promise<IResponse<ILikedPosts[]>> => {
+    let { data, error } = await supabase
+      .from("liked")
+      .select(`*, posts(*, users(name, image), comments(*, users(name, image)), number_of_comments:comments(count), liked(user_id), number_of_likes:liked(count))`)
+      .eq('user_id', userId)
+      .eq('posts.liked.user_id', userId || uuidv4())
+      .order('created_at', {
+        foreignTable: 'posts.comments',
+        ascending: false
+      })
+      .order('created_at', {
+        ascending: false
+      })
+      .limit(3, {
+        foreignTable: 'posts.comments'
+      })
+      .range(from, to);
+
+    console.log('userId', userId);
     if (error) {
       return { status: 'error', data: null, error }
     }

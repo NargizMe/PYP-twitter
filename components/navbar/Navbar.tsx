@@ -6,17 +6,35 @@ import { FiLogOut } from "react-icons/fi";
 import logo from "../../assets/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUserState } from "../../state/user.state";
 import userService from "../../services/user.service";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import navScss from './nav.module.scss';
-import { display } from "@mui/system";
 
 export default function Navbar() {
   const [dropDown, setDropDown] = useState(false);
   const userStore = useUserState();
   const isUser = userStore.user.id;
+
+  const dropDownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const listener = (e: any) => {
+      if (!dropDownRef.current || dropDownRef.current.contains(e.target)) {
+        return;
+      }
+
+      console.log('outside');
+      setDropDown(false)
+    }
+
+      window.addEventListener('mousedown', listener)
+
+    return () => {
+      window.removeEventListener("mousedown", listener);
+    }
+  }, [dropDownRef, setDropDown])
 
   async function onLogOut() {
     const { error } = await userService.signOut();
@@ -28,6 +46,11 @@ export default function Navbar() {
 
     userStore.removeUser();
     window.location.href = "/";
+  }
+
+  function onToggleDropdown() {
+    console.log('dropdown', dropDown);
+    setDropDown(true)
   }
 
   return (
@@ -48,8 +71,8 @@ export default function Navbar() {
       </nav>
       {
         isUser ?
-          <div className={navScss.navProfile}>
-            <button onClick={() => setDropDown(!dropDown)}>
+          <div ref={dropDownRef} className={navScss.navProfile}>
+            <button onClick={onToggleDropdown}>
               {
                 userStore.user.image ?
                   <img

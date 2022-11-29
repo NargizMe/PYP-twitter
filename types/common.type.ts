@@ -2,13 +2,13 @@ export interface IPost{
   created_at: string;
   tweet: string;
   image: string | null;
-  like_count: number;
   retweet_count: number;
   user_id: IUser['user_id'];
   post_id: string;
   comments: IComment[];
   liked: ILiked[];
   number_of_comments: Array<{count: number}>;
+  number_of_likes: Array<{count: number}>;
   users: {
     name: IUser['name'];
     image: IUser['image'];
@@ -17,6 +17,15 @@ export interface IPost{
 
 export interface ILiked{
   user_id: IUser['user_id'];
+}
+
+export interface ILikedPosts{
+  created_at: string;
+  id: number;
+  saved_id: string;
+  user_id: IUser['user_id'];
+  post_id: IPost['post_id'];
+  posts: IPost
 }
 
 export interface IFollowed{

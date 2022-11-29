@@ -69,7 +69,7 @@ export default function Posts({ data }: Props) {
         );
       })}
       {
-        data.length > 2 && showSkeleton ?
+        data.length > 2 && showSkeleton?
           <div ref={hiddenLineRef}>
             <PostSkeleton/>
           </div>

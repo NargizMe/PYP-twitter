@@ -107,7 +107,7 @@ export default function Post({ item }: Props) {
         <ul className={postScss.postInfo}>
           <li>{item.number_of_comments[0].count} Comments</li>
           <li>{item.retweet_count} Retweet</li>
-          <li ref={likeCountRef}>{item.like_count} Like</li>
+          <li ref={likeCountRef}>{item.number_of_likes[0].count} Like</li>
         </ul>
         <div className={postScss.postIconContainer}>
           <button onClick={() => setShowComments(!showComments)}>
@@ -119,7 +119,7 @@ export default function Post({ item }: Props) {
             <span>Retweet</span>
           </button>
           <LikeButton
-            saveCount={item.like_count}
+            likeCount={item.number_of_likes[0].count}
             postId={item.post_id}
             isLiked={userStore.user.id ? item.liked.some(l => l.user_id === userStore.user.id) : false}
             onSaveDone={onSaveDone} />

@@ -6,6 +6,16 @@
   position: sticky;
   top: 95px;
 
+  div{
+    height: 27px;
+    width: 3px;
+    background-color: var(--main-blue-color);
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    position: absolute;
+    left: 0;
+  }
+
   ul{
     list-style: none;
     display: flex;
@@ -13,13 +23,21 @@
     gap: 15px;
 
     li{
-      padding: 5px 20px;
-      border-left: 3px solid transparent;
-      color: var(--dark-gray-color);
+      button{
+        border: none;
+        border-left: 3px solid transparent;
+        padding: 5px 20px;
+        color: var(--dark-gray-color);
+        background-color: transparent;
+        width: 100%;
+        text-align: start;
+        font-size: 15px;
+      }
 
       &:hover{
-        cursor: pointer;
-        border-left: 3px solid var(--main-blue-color);
+        button{
+          cursor: pointer;
+        }
       }
     }
   }
@@ -33,15 +51,16 @@
       padding: 0 30px;
 
       li{
-        padding: 15px 0;
-        border-top: 3px solid transparent;
-        border-left: none;
-        color: var(--dark-gray-color);
-
+        button{
+          border-top: 3px solid transparent;
+          padding: 15px 0;
+          border-left: none;
+          color: var(--dark-gray-color);
+        }
         &:hover{
-          cursor: pointer;
-          border-top: 3px solid var(--main-blue-color);
-          border-left: none
+          button{
+            cursor: pointer;
+          }
         }
       }
     }
