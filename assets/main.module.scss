@@ -1,0 +1,49 @@
+.main{
+  display: grid;
+  grid-template-columns: 745px 306px;
+  justify-content: center;
+  grid-gap: 25px;
+  padding: 95px 0 25px 0;
+
+  & > div{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.myProfileMain{
+  display: grid;
+  grid-template-columns: 305px 745px;
+  justify-content: center;
+  grid-gap: 25px;
+  padding: 95px 0 25px 0;
+  position: relative;
+
+  & > div{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 1110px) {
+  .main{
+    grid-template-columns: minmax(max-content, 745px);
+
+    & > div {
+      width: 100%;
+      max-width: 745px;
+    }
+  }
+
+  .myProfileMain{
+    grid-template-columns: minmax(max-content, 745px);
+
+    & > div {
+      width: 100%;
+      max-width: 745px;
+    }
+  }
+}
+

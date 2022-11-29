@@ -1,4 +1,3 @@
-import Image from "next/image";
 import img from "../../assets/images/me.jpg";
 import { AiOutlineHeart } from "react-icons/ai";
 import commentScss from "./comment.module.scss";

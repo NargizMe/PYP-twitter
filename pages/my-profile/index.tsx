@@ -1,13 +1,13 @@
-import PostForm from "../components/post-form/PostForm";
-import Posts from "../components/posts/Posts";
-import WhoToFollow from "../components/who-to-follow/WhoToFollow";
-import { useUserState } from "../state/user.state";
-import postService from "../services/post.service";
-import { useEffect, useState } from "react";
-import { usePostState } from "../state/post.state";
-import mainScss from '../assets/main.module.scss';
+import mainScss from '../../assets/main.module.scss';
+import SearchingInMyProfile from "../../components/searching-in-my-profile/SearchingInMyProfile";
+import { useUserState } from "../../state/user.state";
+import { usePostState } from "../../state/post.state";
+import { useEffect } from "react";
+import postService from "../../services/post.service";
+import Posts from "../../components/posts/Posts";
 
-export default function Home() {
+export default function MyProfile() {
+
   const userStore = useUserState();
   const postStore = usePostState();
 
@@ -17,7 +17,6 @@ export default function Home() {
       postStore.setPayload(await data)
     })()
   }, [])
-
 
   function renderPosts() {
     if (postStore.payload.status === "success") {
@@ -36,14 +35,13 @@ export default function Home() {
   }
 
   return (
-    <main className={mainScss.main}>
+    <main className={mainScss.myProfileMain}>
       <div>
-        {
-          userStore.user.id? <PostForm />: null
-        }
+        <SearchingInMyProfile/>
+      </div>
+      <div>
         {renderPosts()}
       </div>
-      <WhoToFollow />
     </main>
   );
 }

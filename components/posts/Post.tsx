@@ -2,85 +2,27 @@ import { format } from "date-fns";
 import { BiComment } from "react-icons/bi";
 import { AiOutlineRetweet } from "react-icons/ai";
 import { RiSendPlaneLine } from "react-icons/ri";
-import Comment from "../comment/Comment";
+import Comments from "../comment/Comments";
 import postScss from './post.module.scss';
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import { useUserState } from "../../state/user.state";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import commentService from "../../services/comment.service";
-import { IComment, IPost, IPostRequest } from "../../types/common.type";
-import CommentSkeleton from "./CommentSkeleton";
+import { IComment, IPost } from "../../types/common.type";
 import LikeButton from "../like-button/LikeButton";
-import postService from "../../services/post.service";
 
 interface Props {
   item: IPost;
 }
 
 export default function Post({ item }: Props) {
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<IComment[]>([]);
-  const [lazyComments, setLazyComments] = useState<IComment[]>([]);
   const userStore = useUserState();
 
-  const hiddenLineRef = useRef<HTMLDivElement | null>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
   const likeCountRef = useRef<HTMLLIElement | null>(null)
-
-  useEffect(() => {
-    (async() => {
-      if (item.comments.length > 2 && showComments) {
-        let options = {
-          root: null,
-          rootMargin: '0px',
-          threshold: 1.0
-        }
-
-        const request = await observerFn();
-
-        observer.current = new IntersectionObserver(request, options);
-        observer.current.observe(hiddenLineRef.current!)
-      }
-      else{
-        observer.current?.disconnect();
-      }
-    })()
-
-    return () => {
-      if(observer.current){
-        observer.current?.disconnect();
-      }
-    }
-  }, [showComments])
-
-  async function observerFn() {
-
-    let from = 3, to = 5;
-    return async function(entries: any){
-      if(entries[0].isIntersecting){
-        let data = await commentService.getCommentsByPostId(from, to, item.post_id);
-
-        if(data.status === 'success'){
-          const payload = data.data!;
-
-          if(data.data?.length){
-            setLazyComments((prev: IComment[]) => [...prev, ...payload])
-          }
-        }
-
-        if(data.data?.length === 0){
-          setShowSkeleton(false);
-          observer.current!.disconnect();
-        }
-
-        from+=3;
-        to+=3;
-      }
-    }
-  }
 
   function handleDateFormat(date: string) {
     const newDate = new Date(date);
@@ -202,53 +144,7 @@ export default function Post({ item }: Props) {
         <div className={postScss.line} />
       {
         showComments?
-          // <Comments item={item} showComments={showComments} comments={comments}/>
-          <div
-            className={postScss.scrollableDiv}
-            style={
-              [...comments, ...item.comments].length>2? {height: '350px'}:
-              [...comments, ...item.comments].length===1? {height: '150px'}:
-              [...comments, ...item.comments].length===2? {height: '281px'}:
-                {height: '0'}
-            }
-          >
-            <div className={postScss.scrollableContent}>
-              {
-                comments.map((comment: IComment) => {
-                  return (
-                    comment.post_id === item.post_id ?
-                      <Comment data={comment} key={comment.comment_id} />
-                      : null
-                  );
-                })
-              }
-              {
-                item.comments.map((comment: IComment) => {
-                  return (
-                    comment.post_id === item.post_id ?
-                      <Comment data={comment} key={comment.comment_id} />
-                      : null
-                  );
-                })
-              }
-              {
-                lazyComments.map((comment: IComment) => {
-                  return (
-                    comment.post_id === item.post_id ?
-                      <Comment data={comment} key={comment.comment_id} />
-                      : null
-                  );
-                })
-              }
-              {
-                item.comments.length > 2 && showSkeleton ?
-                  <div ref={hiddenLineRef}>
-                    <CommentSkeleton/>
-                  </div>
-                  : null
-              }
-            </div>
-          </div>
+          <Comments item={item} showComments={showComments} comments={comments}/>
         : null
       }
   </section>

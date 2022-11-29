@@ -24,6 +24,7 @@
   background-color: white;
   border-radius: 13px;
   padding: 13px 20px;
+  max-height: 450px;
 
   h4 {
     font-weight: 600;
@@ -40,6 +41,10 @@
     letter-spacing: -0.035em;
     color: var(--dark-gray-color);
     margin: 20px 0;
+  }
+
+  @media screen and (max-width: 1110px) {
+    display: none;
   }
 }
 

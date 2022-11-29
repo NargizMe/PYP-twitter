@@ -112,6 +112,7 @@
 .postImg{
   display: flex;
   justify-content: center;
+  width: 100%;
   max-width: 705px;
   height: 375px;
 
@@ -119,6 +120,7 @@
     object-fit: contain;
     border-radius: 7px;
     height: 100%;
+    width: 100%;
   }
 }
 

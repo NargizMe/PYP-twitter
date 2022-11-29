@@ -1,4 +1,3 @@
-;
 import Image from "next/image";
 import img from "../../assets/images/signin-image.jpeg";
 import { useState } from "react";

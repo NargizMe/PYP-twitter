@@ -11,6 +11,7 @@ import { useUserState } from "../../state/user.state";
 import userService from "../../services/user.service";
 import { PATH_TO_USER_IMAGE } from "../../utils/constants";
 import navScss from './nav.module.scss';
+import { display } from "@mui/system";
 
 export default function Navbar() {
   const [dropDown, setDropDown] = useState(false);
@@ -68,7 +69,7 @@ export default function Navbar() {
               dropDown ?
                 <ul className={navScss.navDropDown}>
                   <li>
-                    <Link href={"/profile"}>
+                    <Link href={"/my-profile"}>
                       <a>
                         <CgProfile />
                         <span>My Profile</span>

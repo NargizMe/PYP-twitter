@@ -67,12 +67,15 @@
   button {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 130px;
     background-color: transparent;
     border: none;
     cursor: pointer;
     color: var(--main-black-color);
+
+    span{
+      margin: 0 13px 0 10px;
+    }
 
     svg {
       font-size: 18px;

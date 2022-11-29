@@ -1,4 +1,4 @@
-import supabase from "../config/supabaseClient";
+import supabase from "../config/supabaseClient.supabase";
 import { IPost, IResponse, IUser } from "../types/common.type";
 import { v4 as uuidv4 } from "uuid";
 

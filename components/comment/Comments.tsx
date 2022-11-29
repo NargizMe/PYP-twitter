@@ -5,7 +5,13 @@ import CommentSkeleton from "../posts/CommentSkeleton";
 import { useEffect, useRef, useState } from "react";
 import commentService from "../../services/comment.service";
 
-export default function Comments(item:IPost, showComments:any, comments:any){
+interface Props{
+  item: IPost;
+  showComments: boolean;
+  comments: IComment[];
+}
+
+export default function Comments({ item, showComments, comments }: Props){
   const [lazyComments, setLazyComments] = useState<IComment[]>([]);
   const [showSkeleton, setShowSkeleton] = useState(true);
 

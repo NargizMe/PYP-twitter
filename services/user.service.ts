@@ -1,4 +1,4 @@
-import supabase from "../config/supabaseClient";
+import supabase from "../config/supabaseClient.supabase";
 import { FormikValues } from "formik";
 import { IFollowed, IPost, IResponse, IUser } from "../types/common.type";
 

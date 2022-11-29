@@ -1,0 +1,49 @@
+.searchingInMyProfileContainer{
+  background-color: white;
+  border-radius: 13px;
+  padding: 25px 0;
+  max-height: 166px;
+  position: sticky;
+  top: 95px;
+
+  ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    li{
+      padding: 5px 20px;
+      border-left: 3px solid transparent;
+      color: var(--dark-gray-color);
+
+      &:hover{
+        cursor: pointer;
+        border-left: 3px solid var(--main-blue-color);
+      }
+    }
+  }
+
+  @media screen and (max-width: 1110px) {
+    padding: 0;
+
+    ul{
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 30px;
+
+      li{
+        padding: 15px 0;
+        border-top: 3px solid transparent;
+        border-left: none;
+        color: var(--dark-gray-color);
+
+        &:hover{
+          cursor: pointer;
+          border-top: 3px solid var(--main-blue-color);
+          border-left: none
+        }
+      }
+    }
+  }
+}

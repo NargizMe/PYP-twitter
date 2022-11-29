@@ -1,4 +1,4 @@
-import supabase from "../config/supabaseClient";
+import supabase from "../config/supabaseClient.supabase";
 import { IComment, IPost, IResponse, IUser } from "../types/common.type";
 
 const commentService = {
