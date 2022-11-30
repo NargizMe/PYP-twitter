@@ -17,7 +17,7 @@
   grid-template-columns: 305px 745px;
   justify-content: center;
   grid-gap: 25px;
-  padding: 95px 0 25px 0;
+  padding: 100px 0 25px 0;
   position: relative;
 
   & > div{
@@ -29,7 +29,7 @@
 
 @media screen and (max-width: 1110px) {
   .main{
-    grid-template-columns: minmax(max-content, 745px);
+    grid-template-columns: minmax(min-content, 745px);
 
     & > div {
       width: 100%;
@@ -38,7 +38,7 @@
   }
 
   .myProfileMain{
-    grid-template-columns: minmax(max-content, 745px);
+    grid-template-columns: minmax(min-content, 745px);
 
     & > div {
       width: 100%;

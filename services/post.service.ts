@@ -76,7 +76,6 @@ const postService = {
       })
       .range(from, to);
 
-    console.log('userId', userId);
     if (error) {
       return { status: 'error', data: null, error }
     }

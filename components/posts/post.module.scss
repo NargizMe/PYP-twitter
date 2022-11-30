@@ -159,6 +159,10 @@
     border-radius: 10px;
     cursor: pointer;
 
+    @media screen and (max-width: 770px){
+      padding: 13px 10px;
+    }
+
     svg {
       margin-right: 13px;
     }

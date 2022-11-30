@@ -45,6 +45,10 @@
   @media screen and (max-width: 1110px) {
     padding: 0;
 
+    div{
+      display: none;
+    }
+
     ul{
       flex-direction: row;
       justify-content: space-between;
@@ -60,6 +64,7 @@
         &:hover{
           button{
             cursor: pointer;
+            border-top: 3px solid var(--main-blue-color);
           }
         }
       }

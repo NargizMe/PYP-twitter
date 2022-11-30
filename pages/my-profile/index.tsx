@@ -7,6 +7,7 @@ import postService from "../../services/post.service";
 import Posts from "../../components/posts/Posts";
 import { useLikedState } from "../../state/liked.state";
 import { IPost, IResponse } from "../../types/common.type";
+import ProfileAvatarContainer from "../../components/profile-avatar-container/ProfileAvatarContainer";
 
 export default function MyProfile() {
   const [list, setList] = useState<IPost[]>([]);
@@ -46,13 +47,16 @@ export default function MyProfile() {
   }
 
   return (
-    <main className={mainScss.myProfileMain}>
-      <div>
-        <SearchingInMyProfile/>
-      </div>
-      <div>
-        <Posts data={list} />
-      </div>
-    </main>
+    <>
+      <ProfileAvatarContainer/>
+      <main className={mainScss.myProfileMain}>
+        <div>
+          <SearchingInMyProfile/>
+        </div>
+        <div>
+          <Posts data={list} />
+        </div>
+      </main>
+    </>
   );
 }

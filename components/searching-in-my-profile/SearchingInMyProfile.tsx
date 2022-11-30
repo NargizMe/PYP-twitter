@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import searchingInMyProfileScss from "./searchingInMyProfile.module.scss";
 import { ILikedState, useLikedState } from "../../state/liked.state";
 import gsap from 'gsap';

@@ -43,7 +43,6 @@ export default function PostForm() {
       user_id: userState.user.id!,
       post_id: uuidv4(),
       retweet_count: 0,
-      like_count: 0,
       created_at: payloadCreatedAt,
     };
     const upLoad = await postService.uploadImage(file);
@@ -63,6 +62,7 @@ export default function PostForm() {
           image: userState.user.image
         },
         number_of_comments: [{ count: 0 }],
+        number_of_likes: [{ count: 0 }],
         comments: [],
         liked: []
       });

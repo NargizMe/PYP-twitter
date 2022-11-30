@@ -38,7 +38,6 @@ export interface IPostRequest{
   created_at: Date;
   tweet: string;
   image: string | null;
-  like_count: number;
   retweet_count: number;
   user_id: IUser['user_id'];
   post_id: string;

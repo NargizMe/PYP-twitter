@@ -24,12 +24,10 @@ export default function Navbar() {
       if (!dropDownRef.current || dropDownRef.current.contains(e.target)) {
         return;
       }
-
-      console.log('outside');
       setDropDown(false)
     }
 
-      window.addEventListener('mousedown', listener)
+    window.addEventListener('mousedown', listener)
 
     return () => {
       window.removeEventListener("mousedown", listener);
@@ -49,16 +47,17 @@ export default function Navbar() {
   }
 
   function onToggleDropdown() {
-    console.log('dropdown', dropDown);
     setDropDown(true)
   }
 
   return (
     <header className={navScss.navHeader}>
-      <div className={navScss.navLogo}>
-        <Image src={logo} alt="logo" width={40} height={40}/>
-        <p>TWITTER</p>
-      </div>
+      <Link href="/" className={navScss.navLogo}>
+        <a className={navScss.navLogo}>
+          <Image src={logo} alt="logo" width={40} height={40}/>
+          <p>TWITTER</p>
+        </a>
+      </Link>
       <nav>
         <ul className={navScss.navList}>
           <li><Link href="/">
@@ -100,7 +99,7 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li>
-                    <Link href={"/group-chat"}>
+                    <Link href={"/friends"}>
                       <a><HiUserGroup />
                         <span>Friends</span></a>
                     </Link>
