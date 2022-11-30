@@ -40,16 +40,6 @@ export default function LikeButton({ likeCount, postId, isLiked, onSaveDone }: P
     handleLikeLocalState(true);
     const {status, data, error} = await postService.saveLikedtoDB(post_id, userStore.user.id!);
 
-    if(status === 'success'){
-      const {status, data, error} = await postService.updatePost(name, count, post_id);
-
-      // if updatePost is error
-      if(status === 'error'){
-        // ui show count
-        handleLikeLocalState(false);
-      }
-    }
-
     // if saveLikedtoDB is error
     if(status === 'error'){
       handleLikeLocalState(false);
@@ -60,16 +50,6 @@ export default function LikeButton({ likeCount, postId, isLiked, onSaveDone }: P
     // immideatly show like
     handleLikeLocalState(false);
     const {status, data, error} = await postService.deleteLikedFromDB(post_id,userStore.user.id!);
-
-    if(status === 'success'){
-      const {status, data, error} = await postService.updatePost(name, count, post_id);
-
-      // if updatePost is error
-      if(status === 'error'){
-        // ui show count
-        handleLikeLocalState(true);
-      }
-    }
 
     // if saveLikedtoDB is error
     if(status === 'error'){

@@ -12,23 +12,11 @@ interface Props {
 }
 
 export default function Comment({ data }: Props) {
-  const userStore = useUserState();
-
   function handleDateFormat(date: string) {
     const newDate = new Date(date);
     let result = format(newDate, "dd MMMM") + " at " + format(newDate, "HH:mm");
     return result;
   }
-
-  // function onLikeComment(){
-  //   if(!userStore.user.id){
-  //     window.location.href = "/login-sign-up";
-  //     return;
-  //   }
-  //   else{
-  //     // setLike(!like);
-  //   }
-  // }
 
   return (
     <div className={commentScss.commentContainer}>
@@ -49,13 +37,6 @@ export default function Comment({ data }: Props) {
           </div>
           <p>{data.comment}</p>
         </div>
-        {/*<div className={commentScss.commentLikeContainer}>*/}
-        {/*  <button onClick={() => onLikeComment()}>*/}
-        {/*    <AiOutlineHeart />*/}
-        {/*    <span>Like</span>*/}
-        {/*  </button>*/}
-        {/*  <button>{data.like_count} Likes</button>*/}
-        {/*</div>*/}
       </div>
     </div>
   );

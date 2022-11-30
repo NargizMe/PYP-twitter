@@ -154,24 +154,6 @@ const postService = {
     return { status: 'success', data: {post_id, user_id}, error: null }
   },
 
-  getLiked: async (): Promise<any> => {
-    let { data, error } = await supabase
-      .from("liked")
-      .select(`*, posts(*, users(name, image))`)
-      .order('created_at', {
-        ascending: false
-      })
-
-    if (error) {
-      return { status: 'error', data: null, error }
-    }
-    if (data) {
-      return { status: 'success', data, error: null }
-    }
-
-    return { status: 'pending', data: null, error: null }
-  },
-
   getSpecificLiked: async (post_id: IPost['post_id'], user_id: IUser['user_id']): Promise<IResponse<any>> => {
     let { data, error } = await supabase
       .from("liked")

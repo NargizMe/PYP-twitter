@@ -19,6 +19,11 @@ export interface ILiked{
   user_id: IUser['user_id'];
 }
 
+export interface IRetweeted{
+  user_id: IUser['user_id'];
+  post_id: IPost['post_id'];
+}
+
 export interface ILikedPosts{
   created_at: string;
   id: number;
@@ -48,7 +53,6 @@ export interface IComment{
   comment_id: string;
   created_at: string;
   comment: string;
-  like_count: number;
   user_id: string
   users: IUser;
   post_id: string
